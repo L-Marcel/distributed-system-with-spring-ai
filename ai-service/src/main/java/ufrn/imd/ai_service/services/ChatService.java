@@ -15,6 +15,7 @@ public class ChatService {
     this.client = builder.build();
   };
   
+  // @RateLimiter(name = "agent")
   public String ask(String prompt) {
     return this.client.prompt()
       .user(prompt)

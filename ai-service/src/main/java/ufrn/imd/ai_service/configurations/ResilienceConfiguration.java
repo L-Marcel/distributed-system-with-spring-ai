@@ -16,7 +16,7 @@ public class ResilienceConfiguration {
         "agent",
         (builder) -> builder
           .limitForPeriod(1)
-          .limitRefreshPeriod(Duration.ofMinutes(0))
+          .limitRefreshPeriod(Duration.ofMinutes(1))
           .build()
       );
   };

@@ -7,16 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ufrn.imd.ai_service.services.ChatService;
+import ufrn.imd.ai_service.services.ChatsService;
+import ufrn.imd.ai_service.services.DocumentsService;
 
 @RestController
 @RequestMapping("/chat")
 public class ChatController {
-  private ChatService service;
+  private ChatsService service;
 
   @Autowired
   public ChatController(
-    ChatService service
+    ChatsService service,
+    DocumentsService documentsService
   ) {
     this.service = service;
   };

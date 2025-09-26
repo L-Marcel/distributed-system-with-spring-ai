@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import ufrn.imd.ai_service.dto.DocumentRegistry;
 import ufrn.imd.ai_service.services.DocumentsService;
 
 @RestController
@@ -27,9 +28,9 @@ public class DocumentsController {
 
   @PostMapping
   public ResponseEntity<Void> upload(
-    @RequestPart MultipartFile file
+    @RequestPart MultipartFile[] files
   ) {
-    List<Document> documents = this.service.read(file);
+    List<Document> documents = this.service.read(files);
     documents = this.service.split(documents);
     this.service.registry(documents);
     System.out.println(documents);

@@ -24,4 +24,8 @@ public class VectorStoreRepository {
   public void add(List<Document> documents) {
     this.store.add(documents);
   };
+
+  public void remove(List<String> ids) {
+    this.store.delete(ids);
+  };
 };

@@ -1,5 +1,6 @@
 package ufrn.imd.ai_service.services;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.ai.document.Document;
@@ -23,6 +24,17 @@ public class DocumentsService {
   ) {
     this.splitter = splitter;
     this.repository = repository;
+  };
+
+  public List<Document> read(MultipartFile[] files) {
+    List<Document> documents = new LinkedList<>();
+
+    for(MultipartFile file : files) {
+      TikaDocumentReader reader = new TikaDocumentReader(file.getResource());
+      documents.addAll(reader.read());
+    };
+   
+    return documents;
   };
 
   public List<Document> read(MultipartFile file) {

@@ -14,7 +14,7 @@ import ufrn.imd.ai_service.services.DocumentsService;
 @RequestMapping("/chat")
 public class ChatController {
   private ChatsService service;
-
+  
   @Autowired
   public ChatController(
     ChatsService service,

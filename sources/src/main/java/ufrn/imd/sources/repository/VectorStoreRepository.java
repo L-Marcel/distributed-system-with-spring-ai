@@ -1,9 +1,12 @@
-package ufrn.imd.ai_service.repository;
+package ufrn.imd.sources.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.vectorstore.filter.Filter;
+import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +28,11 @@ public class VectorStoreRepository {
     this.store.add(documents);
   };
 
-  public void remove(List<String> ids) {
-    this.store.delete(ids);
+  public void removeById(UUID uuid) {
+    Filter.Expression expression = new FilterExpressionBuilder()
+      .eq("uuid", uuid.toString())
+      .build();
+    
+    this.store.delete(expression);
   };
 };

@@ -18,7 +18,7 @@
     <spring-ai.version>1.0.2</spring-ai.version>
 	</properties>
   <modules>
-    <module>ai-service</module>
+    <module>sources</module>
     <module>gateway</module>
     <module>eureka</module>
   </modules>

@@ -1,4 +1,4 @@
-package ufrn.imd.ai_service.controllers;
+package ufrn.imd.sources.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,20 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ufrn.imd.ai_service.services.ChatsService;
-import ufrn.imd.ai_service.services.DocumentsService;
+import ufrn.imd.sources.services.RetriveService;
+import ufrn.imd.sources.services.SourcesService;
 
 @RestController
-@RequestMapping("/chat")
-public class ChatController {
-  private ChatsService service;
+@RequestMapping("/retrieve")
+public class RetriveController {
+  private RetriveService retrieve;
   
   @Autowired
-  public ChatController(
-    ChatsService service,
-    DocumentsService documentsService
+  public RetriveController(
+    RetriveService retrieve,
+    SourcesService sources
   ) {
-    this.service = service;
+    this.retrieve = retrieve;
   };
 
   @GetMapping
@@ -30,8 +30,4 @@ public class ChatController {
     //String answer = this.service.ask(prompt);
     return ResponseEntity.ok(prompt);
   };
-
-  // public ResponseEntity<Void> fallback(RequestNotPermitted ex) {
-  //   return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
-  // };
 };

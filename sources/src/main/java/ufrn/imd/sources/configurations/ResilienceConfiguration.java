@@ -1,4 +1,4 @@
-package ufrn.imd.ai_service.configurations;
+package ufrn.imd.sources.configurations;
 
 import java.time.Duration;
 

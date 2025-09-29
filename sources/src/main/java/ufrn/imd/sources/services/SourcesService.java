@@ -18,6 +18,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ufrn.imd.sources.errors.SourceNotFound;
+import ufrn.imd.sources.errors.SourceVersionNotFound;
 import ufrn.imd.sources.models.Source;
 import ufrn.imd.sources.repository.SourcesRepository;
 import ufrn.imd.sources.repository.VectorStoreRepository;
@@ -110,15 +112,13 @@ public class SourcesService {
 
   public void requestSummarizationById(UUID uuid) {
     Optional<Source> source = this.sources.findById(uuid);
-    if(!source.isPresent()) throw new RuntimeException();
-    // TODO - Custom error
+    if(!source.isPresent()) throw new SourceNotFound();
     this.requestSummarization(source.get());
   };
 
   public Source findById(UUID uuid) {
     Optional<Source> source = this.sources.findById(uuid);
-    if(!source.isPresent()) throw new RuntimeException();
-    // TODO - Custom error
+    if(!source.isPresent()) throw new SourceNotFound();
     return source.get();
   };
 
@@ -135,8 +135,7 @@ public class SourcesService {
       updatedAt
     );
 
-    if(!source.isPresent()) throw new RuntimeException();
-    // TODO - Custom error
+    if(!source.isPresent()) throw new SourceVersionNotFound();
     return source.get();
   };
 };

@@ -90,7 +90,6 @@ public class NoticesService {
     JobParameters parameters = new JobParametersBuilder()
       .addString("uuid", notice.getUuid().toString())
       .addString("filename", notice.getFilename())
-      .addLong("created_at", notice.getCreatedAt().getTime())
       .addLong("updated_at", notice.getUpdatedAt().getTime())
       .toJobParameters();
     

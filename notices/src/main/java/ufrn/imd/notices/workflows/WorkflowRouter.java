@@ -4,57 +4,40 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public final class WorkflowRouter {
-  public static <Input, Key> RouteSelector<Input, Key> on(
-    Function<Input, Key> selector
+public final class WorkflowRouter<Input, Output, RouterOutput, Key> {
+  private final Workflow<Input, Output> workflow;
+  private final Function<Output, Key> selector;
+  private final Map<Key, Workflow<Output, RouterOutput>> routes;
+
+  protected WorkflowRouter(
+    Workflow<Input, Output> workflow,
+    Function<Output, Key> selector,
+    Key key,
+    Workflow<Output, RouterOutput> branch
   ) {
-    return new RouteSelector<>(selector);
+    this.workflow = workflow;
+    this.selector = selector;
+    this.routes = new LinkedHashMap<>();
   };
 
-  public static class RouteSelector<Input, Key> {
-    private final Function<Input, Key> selector;
-
-    private RouteSelector(Function<Input, Key> selector) {
-      this.selector = selector;
-    };
-
-    public <Output> RouterBuilder<Input, Output, Key> router(
-      Workflow<Input, Output> defaultRoute
-    ) {
-      return new RouterBuilder<>(selector, defaultRoute);
-    };
+  public WorkflowRouter<Input, Output, RouterOutput, Key> route(
+    Key key,
+    Workflow<Output, RouterOutput> branch
+  ) {
+    this.routes.put(key, branch);
+    return this;
   };
 
-  public static class RouterBuilder<Input, Output, Key> {
-    private final Function<Input, Key> selector;
-    private final Map<Key, Workflow<Input, Output>> routes;
-    private Workflow<Input, Output> defaultRoute;
-
-    RouterBuilder(
-      Function<Input, Key> selector,
-      Workflow<Input, Output> defaultRoute
-    ) {
-      this.selector = selector;
-      this.defaultRoute = defaultRoute;
-      this.routes = new LinkedHashMap<>();
-    };
-
-    public RouterBuilder<Input, Output, Key> route(
-      Key key, 
-      Workflow<Input, Output> branch
-    ) {
-      this.routes.put(key, branch);
-      return this;
-    };
-
-    public Flow<Input, Output> build() {
-      return (Input input) -> {
-        Key key = selector.apply(input);
-        Workflow<Input, Output> selected = this.routes
-          .getOrDefault(key, this.defaultRoute);
-        
-        return selected.run(input);
-      };
-    };
+  public Workflow<Input, RouterOutput> otherwise(
+    Workflow<Output, RouterOutput> otherwise
+  ) {
+    return new Workflow<>((Input input) -> {
+      Output result = this.workflow.run(input);
+      Key key = selector.apply(result);
+      Workflow<Output, RouterOutput> selected = this.routes
+        .getOrDefault(key, otherwise);
+      
+      return selected.run(result);
+    });
   };
 };

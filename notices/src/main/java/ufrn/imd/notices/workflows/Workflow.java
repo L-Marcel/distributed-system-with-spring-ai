@@ -1,7 +1,8 @@
 package ufrn.imd.notices.workflows;
 
+import java.util.function.Function;
 
-// Tenho que ver a questão do Monad ("padrão" funcional que estou utilizando)
+// TODO - Comecei a fazer, me empolguei e vou acabar descartando
 
 public final class Workflow<Input, Output> {
   private final Flow<Input, Output> flow;
@@ -23,6 +24,12 @@ public final class Workflow<Input, Output> {
       Output result = this.flow.handle(input);
       return next.handle(result);
     });
+  };
+
+  public <Key> WorkflowRouterSelector<Input, Output, Key> router(
+    Function<Output, Key> selector
+  ) {
+    return new WorkflowRouterSelector<>(this, selector);
   };
 
   public Output run(Input input) {

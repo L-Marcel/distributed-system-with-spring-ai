@@ -28,11 +28,29 @@ public class VectorStoreRepository {
     this.store.add(documents);
   };
 
-  public void removeById(UUID uuid) {
+  public void removeById(UUID id) {
     Filter.Expression expression = new FilterExpressionBuilder()
-      .eq("uuid", uuid.toString())
+      .in("id", id.toString())
       .build();
     
     this.store.delete(expression);
+  };
+
+  public void removeByIdAndVersion(UUID id, Long version) {
+    Filter.Expression expression = this.expressionByIdAndVersion(
+      id, 
+      version
+    );
+    
+    this.store.delete(expression);
+  };
+
+  public Filter.Expression expressionByIdAndVersion(UUID id, Long version) {
+    // return new FilterExpressionBuilder().eq("version", version).build();
+    return new FilterExpressionBuilder()
+      .and(
+        new FilterExpressionBuilder().in("id", id.toString()),
+        new FilterExpressionBuilder().eq("version", version)
+      ).build();
   };
 };

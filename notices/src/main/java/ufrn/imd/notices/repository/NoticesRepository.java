@@ -1,19 +1,17 @@
 package ufrn.imd.notices.repository;
 
-import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import ufrn.imd.notices.models.Notice;
 
+@Repository
 public interface NoticesRepository extends JpaRepository<Notice, UUID> {
-  public Optional<Notice> findByIdAndFilenameAndCreatedAtAndUpdatedAtAndExtractionFinished(
-    UUID uuid,
-    String filename,
-    Timestamp createdAt,
-    Timestamp updatedAt,
-    Boolean extractionFinished
+  public Optional<Notice> findByIdAndVersion(
+    UUID id,
+    Long version
   );
 };

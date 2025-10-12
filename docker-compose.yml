@@ -1,16 +1,30 @@
-version: '3.8'
-
 services:
   redis-stack:
-    image: redis/redis-stack:latest
-    container_name: redis_documents_vector_store
+    image: redis/redis-stack
+    container_name: redis_vector_store
     ports:
       - "6379:6379"
       - "8001:8001"
     volumes:
-      - redis-documents-data:/data
+      - redis-data:/data
+    restart: always
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./batch.sql:/docker-entrypoint-initdb.d/batch.sql
     restart: always
 
 volumes:
-  redis-documents-data:
+  redis-data:
+    driver: local
+  mysql-data:
     driver: local

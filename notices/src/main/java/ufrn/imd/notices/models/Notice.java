@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.CascadeType;
@@ -16,21 +15,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.Version;
+import lombok.Data;
 import ufrn.imd.notices.models.enums.NoticeStatus;
+import ufrn.imd.notices.models.enums.NoticeType;
 
+@Data
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Notice {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID uuid;
+  private UUID id;
+
+  @Version
+  private Long version;
 
   @Column(nullable = false, unique = true)
   private String filename;
@@ -44,6 +42,9 @@ public class Notice {
 
   @Enumerated(EnumType.STRING)
   private NoticeStatus status;
+
+  @Enumerated(EnumType.STRING)
+  private NoticeType type = NoticeType.UNKNOWN;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "notice")
   private Set<Note> notes;

@@ -12,23 +12,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
       - ./batch.sql:/docker-entrypoint-initdb.d/batch.sql
     restart: always
-  # mysql:
-  #   image: mysql:8.0
-  #   container_name: mysql_database
-  #   ports:
-  #     - "3306:3306"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: root
-  #     MYSQL_DATABASE: database
-  #     MYSQL_USER: app
-  #     MYSQL_PASSWORD: app
-  #   volumes:
-  #     - mysql-data:/var/lib/mysql
-  #     - ./batch.sql:/docker-entrypoint-initdb.d/batch.sql
-  #   restart: always
 
 volumes:
   postgres-data:
-    driver: local
-  mysql-data:
     driver: local

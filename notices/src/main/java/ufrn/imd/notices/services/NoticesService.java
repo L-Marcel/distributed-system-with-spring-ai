@@ -2,7 +2,6 @@ package ufrn.imd.notices.services;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,7 +92,7 @@ public class NoticesService {
 
     for(Document document : documents) {
       Map<String, Object> metadata = document.getMetadata();
-      metadata.put("id", notice.getId());
+      metadata.put("notice", notice.getId());
       metadata.put("version", notice.getVersion());
     };
 
@@ -114,61 +113,66 @@ public class NoticesService {
 
   @Transactional
   public Notice update(
-    UUID id,
+    Long id,
     List<Document> documents,
     String filename,
     Long bytes
   ) {
+    Notice notice = this.findById(id);
+
     log.debug(
-      "Updating notice with id '{}'' from file '{}'",
+      "Updating notice with id '{}' and version '{}' from file '{}'",
       id,
+      notice.getVersion(),
       filename
     );
 
-    Notice notice = this.findById(id);
     notice.setFilename(filename);
     notice.setType(NoticeType.UNKNOWN);
     // TODO - tirar isso depois
     notice.setBytes(bytes + System.currentTimeMillis());
-    this.notices.save(notice);
+    this.notices.saveAndFlush(notice);
 
     log.debug(
-      "Notice with id '{}' update dfrom file '{}'", 
-      notice.getId(),
+      "Notice with id '{}' update to version '{}' from file '{}'", 
+      id,
+      notice.getVersion(),
       filename
     );
 
     for(Document document : documents) {
       Map<String, Object> metadata = document.getMetadata();
-      metadata.put("id", notice.getId());
+      metadata.put("notice", id);
       metadata.put("version", notice.getVersion());
     };
 
     log.debug(
-      "Updating vectors from notice '{}'",
-      notice.getId()
+      "Updating vectors from notice with id '{}'",
+      id
     );
 
+    this.vectors.removeByNoticeId(id);
     this.vectors.add(documents);
-    this.vectors.removeByIdAndVersion(id, notice.getVersion());
 
     log.debug(
-      "Vectors from notice '{}' updated",
-      notice.getId()
+      "Vectors from notice with id '{}' updated",
+      id
     );
 
     return notice;
   };
 
   @Transactional
-  public void deleteById(UUID id) {
+  public void deleteById(Long id) {
+    this.findById(id);
+
     log.debug(
       "Deleting vectors and notice by id '{}'", 
       id
     );
 
     this.notices.deleteById(id);
-    this.vectors.removeById(id);
+    this.vectors.removeByNoticeId(id);
 
     log.debug(
       "Vectors and notice by id '{}' deleted", 
@@ -184,7 +188,7 @@ public class NoticesService {
     );
 
     JobParameters parameters = new JobParametersBuilder()
-      .addString("id", notice.getId().toString())
+      .addLong("id", notice.getId())
       .addLong("version", notice.getVersion())
       .toJobParameters();
     
@@ -201,13 +205,13 @@ public class NoticesService {
     };
   };
 
-  public Notice findById(UUID id) {
+  public Notice findById(Long id) {
     return this.notices.findById(id)
       .orElseThrow(NoitceNotFound::new);
   };
 
   public Notice findByIdAndVersion(
-    UUID id,
+    Long id,
     Long version
   ) {
     return this.notices.findByIdAndVersion(id, version)

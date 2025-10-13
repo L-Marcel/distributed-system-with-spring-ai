@@ -2,7 +2,6 @@ package ufrn.imd.notices.models;
 
 import java.sql.Timestamp;
 import java.util.Set;
-import java.util.UUID;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -24,8 +23,8 @@ import ufrn.imd.notices.models.enums.NoticeType;
 @Entity
 public class Notice {
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
   @Version
   private Long version;

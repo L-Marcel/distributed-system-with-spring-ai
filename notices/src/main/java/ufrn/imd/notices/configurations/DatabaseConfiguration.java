@@ -2,13 +2,10 @@ package ufrn.imd.notices.configurations;
 
 import javax.sql.DataSource;
 
-import org.springframework.ai.vectorstore.redis.RedisVectorStore;
-import org.springframework.ai.vectorstore.redis.RedisVectorStore.MetadataField;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

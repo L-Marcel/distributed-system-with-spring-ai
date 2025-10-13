@@ -54,7 +54,7 @@ public class ExtractionService {
     if(!notice.getType().equals(NoticeType.UNKNOWN))
       return notice.getType();
 
-    Filter.Expression expression = this.vectors.expressionByIdAndVersion(
+    Filter.Expression expression = this.vectors.expressionByNoticeIdAndVersion(
       notice.getId(),
       notice.getVersion()
     );

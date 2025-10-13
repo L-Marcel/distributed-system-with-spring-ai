@@ -1,5 +1,7 @@
 package ufrn.imd.notices.batch;
 
+import java.util.UUID;
+
 import org.springframework.batch.item.ItemReader;
 
 import ufrn.imd.notices.models.Notice;
@@ -7,14 +9,14 @@ import ufrn.imd.notices.services.NoticesService;
 
 public class NoticeItemReader implements ItemReader<Notice> {
   private NoticesService notices;
-  private Long id;
-  private Long version;
+  private UUID id;
+  private Integer version;
   private Boolean read;
 
   public NoticeItemReader(
     NoticesService notices,
-    Long id,
-    Long version
+    UUID id,
+    Integer version
   ) {
     this.notices = notices;
     this.id = id;

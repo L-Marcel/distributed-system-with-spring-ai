@@ -1,19 +1,15 @@
 package ufrn.imd.notices.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.filter.Filter;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
-import org.springframework.ai.vectorstore.filter.Filter.ExpressionType;
-import org.springframework.ai.vectorstore.filter.Filter.Key;
-import org.springframework.ai.vectorstore.filter.Filter.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.graphbuilder.math.Expression;
 
 import lombok.Getter;
 
@@ -33,19 +29,34 @@ public class VectorStoreRepository {
     this.store.add(documents);
   };
 
-  public void removeByNoticeId(Long id) {
+  public void removeByNoticeId(UUID id) {
     Filter.Expression expression = new FilterExpressionBuilder()
-      .eq("notice", id)
+      .eq("notice", id.toString())
       .build();
     
     this.store.delete(expression);
   };
 
-  public Filter.Expression expressionByNoticeIdAndVersion(Long id, Long version) {
+  public Filter.Expression expressionByNoticeIdAndVersion(
+    UUID id, 
+    Integer version
+  ) {
     return new FilterExpressionBuilder()
       .and(
-        new FilterExpressionBuilder().eq("notice", id),
+        new FilterExpressionBuilder().eq("notice", id.toString()),
         new FilterExpressionBuilder().eq("version", version)
       ).build();
+  };
+
+  public SearchRequest searchByNoticeIdAndVersion(
+    UUID id, 
+    Integer version
+  ) {
+    return SearchRequest
+      .builder()
+      .filterExpression(this.expressionByNoticeIdAndVersion(
+        id, 
+        version
+      )).build();
   };
 };

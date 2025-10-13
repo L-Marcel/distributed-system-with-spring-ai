@@ -2,6 +2,7 @@ package ufrn.imd.notices.models;
 
 import java.sql.Timestamp;
 import java.util.Set;
+import java.util.UUID;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Version;
 import lombok.Data;
 import ufrn.imd.notices.models.enums.NoticeStatus;
@@ -23,11 +25,11 @@ import ufrn.imd.notices.models.enums.NoticeType;
 @Entity
 public class Notice {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   @Version
-  private Long version;
+  private Integer version;
 
   @Column(nullable = false, unique = true)
   private String filename;
@@ -40,11 +42,14 @@ public class Notice {
   private Timestamp updatedAt;
 
   @Enumerated(EnumType.STRING)
-  private NoticeStatus status;
+  private NoticeStatus status = NoticeStatus.PROCESSING;
 
   @Enumerated(EnumType.STRING)
   private NoticeType type = NoticeType.UNKNOWN;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "notice")
   private Set<Note> notes;
+  
+  @OneToOne(optional = true, cascade = CascadeType.ALL, mappedBy = "notice")
+  private Contract contract;
 };

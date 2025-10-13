@@ -2,18 +2,14 @@ package ufrn.imd.notices.services;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,23 +29,16 @@ public class NoticesService {
   private TokenTextSplitter splitter;
   private VectorStoreRepository vectors;
   private NoticesRepository notices;
-  private JobLauncher launcher;
-  private Job extract;
 
   @Autowired
   public NoticesService(
     TokenTextSplitter splitter,
     VectorStoreRepository vectors,
-    //ChatMemoryRepository memory,
-    NoticesRepository notices,
-    @Lazy JobLauncher launcher,
-    @Lazy Job extract
+    NoticesRepository notices
   ) {
     this.splitter = splitter;
     this.vectors = vectors;
     this.notices = notices;
-    this.launcher = launcher;
-    this.extract = extract;
   };
 
   public List<Document> read(Resource file) {
@@ -92,7 +81,7 @@ public class NoticesService {
 
     for(Document document : documents) {
       Map<String, Object> metadata = document.getMetadata();
-      metadata.put("notice", notice.getId());
+      metadata.put("notice", notice.getId().toString());
       metadata.put("version", notice.getVersion());
     };
 
@@ -113,7 +102,7 @@ public class NoticesService {
 
   @Transactional
   public Notice update(
-    Long id,
+    UUID id,
     List<Document> documents,
     String filename,
     Long bytes
@@ -142,7 +131,7 @@ public class NoticesService {
 
     for(Document document : documents) {
       Map<String, Object> metadata = document.getMetadata();
-      metadata.put("notice", id);
+      metadata.put("notice", id.toString());
       metadata.put("version", notice.getVersion());
     };
 
@@ -163,7 +152,7 @@ public class NoticesService {
   };
 
   @Transactional
-  public void deleteById(Long id) {
+  public void deleteById(UUID id) {
     this.findById(id);
 
     log.debug(
@@ -180,39 +169,14 @@ public class NoticesService {
     );
   };
 
-  public void requestExtraction(Notice notice) {
-    log.debug(
-      "Requesting notice extraction by id '{}' and version '{}'", 
-      notice.getId(),
-      notice.getVersion()
-    );
-
-    JobParameters parameters = new JobParametersBuilder()
-      .addLong("id", notice.getId())
-      .addLong("version", notice.getVersion())
-      .toJobParameters();
-    
-    try {
-      this.launcher.run(this.extract, parameters);
-
-      log.debug(
-        "Notice extraction requested by id '{}' and version '{}'", 
-        notice.getId(),
-        notice.getVersion()
-      );
-    } catch (Exception e) {
-      e.printStackTrace();
-    };
-  };
-
-  public Notice findById(Long id) {
+  public Notice findById(UUID id) {
     return this.notices.findById(id)
       .orElseThrow(NoitceNotFound::new);
   };
 
   public Notice findByIdAndVersion(
-    Long id,
-    Long version
+    UUID id,
+    Integer version
   ) {
     return this.notices.findByIdAndVersion(id, version)
       .orElseThrow(NoitceNotFound::new);

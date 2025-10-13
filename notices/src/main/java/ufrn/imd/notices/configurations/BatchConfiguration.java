@@ -1,5 +1,7 @@
 package ufrn.imd.notices.configurations;
 
+import java.util.UUID;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -63,13 +65,13 @@ public class BatchConfiguration extends DefaultBatchConfiguration {
   @Bean
   @StepScope
   public ItemReader<Notice> extractReader(
-    @Value("#{jobParameters['id']}") Long id,
-    @Value("#{jobParameters['version']}") Long version
+    @Value("#{jobParameters['id']}") String id,
+    @Value("#{jobParameters['version']}") String version
   ) {
     return new NoticeItemReader(
       this.notices, 
-      id,
-      version
+      UUID.fromString(id),
+      Integer.parseInt(version)
     );
   };
 

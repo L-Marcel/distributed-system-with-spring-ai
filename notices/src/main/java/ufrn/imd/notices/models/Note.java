@@ -15,7 +15,7 @@ public class Note {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @ManyToOne(optional=false)
-  @JoinColumn(name="notice", nullable=false, updatable=false)
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "notice", nullable = false)
   private Notice notice;
 };

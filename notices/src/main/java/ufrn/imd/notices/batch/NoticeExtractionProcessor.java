@@ -31,8 +31,11 @@ public class NoticeExtractionProcessor implements ItemProcessor<Notice, Notice> 
         );
 
         ObjectMapper objectMapper = new ObjectMapper();
+
         System.out.println(
-          objectMapper.writeValueAsString(contract)
+          objectMapper
+            .writerWithDefaultPrettyPrinter()
+            .writeValueAsString(contract.get())
         );
 
         break;

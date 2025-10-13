@@ -25,11 +25,11 @@ public class Contract {
   @Column(nullable = false)
   private String currency;
 
-  @Column(nullable = false)
-  private Date start;
+  @Column(name = "start_date", nullable = false)
+  private Date startDate;
 
-  @Column(nullable = true)
-  private Date end;
+  @Column(name = "end_date", nullable = true)
+  private Date endDate;
 
   @Column(nullable = true)
   private String location;

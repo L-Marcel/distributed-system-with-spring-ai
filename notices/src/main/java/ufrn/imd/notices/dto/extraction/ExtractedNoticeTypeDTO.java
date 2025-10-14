@@ -1,4 +1,4 @@
-package ufrn.imd.notices.dto;
+package ufrn.imd.notices.dto.extraction;
 
 import ufrn.imd.notices.models.enums.NoticeType;
 

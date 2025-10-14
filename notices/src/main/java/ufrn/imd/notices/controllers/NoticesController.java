@@ -53,7 +53,9 @@ public class NoticesController {
 
     NoticeReferenceDTO reference = new NoticeReferenceDTO(
       notice.getId(),
-      notice.getVersion()
+      notice.getVersion(),
+      notice.getType(),
+      notice.getStatus()
     );
 
     return ResponseEntity
@@ -80,7 +82,9 @@ public class NoticesController {
 
     NoticeReferenceDTO reference = new NoticeReferenceDTO(
       notice.getId(),
-      notice.getVersion()
+      notice.getVersion(),
+      notice.getType(),
+      notice.getStatus()
     );
 
     return ResponseEntity

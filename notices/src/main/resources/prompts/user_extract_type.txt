@@ -1,2 +1,2 @@
-Identifique o tipo do edital de versão {version} e id {id}. 
-Use o contexto passado (se houver).
+Identifique o tipo do edital de versão {version} e id {id} buscando
+informações sobre "contrato", "contratante" e "contratado".

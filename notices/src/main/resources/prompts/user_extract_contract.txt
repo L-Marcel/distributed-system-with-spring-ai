@@ -1,2 +1,3 @@
 Extraia os dados do contrato do edital de versão {version} e 
-id {id}. Use o contexto passado (se houver).
+id {id} buscando informações sobre "contrato", "contratante" 
+e "contratado".

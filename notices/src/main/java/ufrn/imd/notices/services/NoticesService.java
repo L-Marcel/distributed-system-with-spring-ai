@@ -79,10 +79,13 @@ public class NoticesService {
       notice.getId()
     );
 
-    for(Document document : documents) {
+    for(int i = 0; i < documents.size(); i++) {
+      Document document = documents.get(i);
       Map<String, Object> metadata = document.getMetadata();
       metadata.put("notice", notice.getId().toString());
       metadata.put("version", notice.getVersion());
+      metadata.put("end_index", documents.size() - 1);
+      metadata.put("index", i);
     };
 
     log.debug(
@@ -129,10 +132,13 @@ public class NoticesService {
       filename
     );
 
-    for(Document document : documents) {
+    for(int i = 0; i < documents.size(); i++) {
+      Document document = documents.get(i);
       Map<String, Object> metadata = document.getMetadata();
-      metadata.put("notice", id.toString());
+      metadata.put("notice", notice.getId().toString());
       metadata.put("version", notice.getVersion());
+      metadata.put("end_index", documents.size() - 1);
+      metadata.put("index", i);
     };
 
     log.debug(

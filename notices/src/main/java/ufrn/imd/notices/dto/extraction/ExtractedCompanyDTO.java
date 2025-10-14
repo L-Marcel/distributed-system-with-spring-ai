@@ -1,8 +1,8 @@
-package ufrn.imd.notices.dto;
+package ufrn.imd.notices.dto.extraction;
 
 import ufrn.imd.notices.models.Company;
 
-public record CompanyDTO(
+public record ExtractedCompanyDTO(
   String cnpj,
   String legalName,
   String tradeName,

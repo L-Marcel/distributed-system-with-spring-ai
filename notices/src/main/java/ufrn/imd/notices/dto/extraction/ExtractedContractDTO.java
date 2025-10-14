@@ -1,19 +1,17 @@
-package ufrn.imd.notices.dto;
+package ufrn.imd.notices.dto.extraction;
 
 import java.sql.Date;
-import java.util.List;
 
 import ufrn.imd.notices.models.Contract;
 
-public record ContractDTO(
+public record ExtractedContractDTO(
   Double value,
   String currency,
   String startDate,
   String endDate,
   String location,
-  CompanyDTO hirer,
-  CompanyDTO hired,
-  List<NoteDTO> notes
+  ExtractedCompanyDTO hirer,
+  ExtractedCompanyDTO hired
 ) {
   public Contract toEntity() {
     Contract contract = new Contract();

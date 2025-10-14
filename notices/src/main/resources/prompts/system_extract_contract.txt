@@ -13,3 +13,7 @@ dados mais importantes são os de contato, em especial o email. Use anotações
 
 As anotações serão usadas pelos demais agentes que avaliaram sua resposta
 e completaram a extração de dados.
+
+Atenção: nenhum contexto será passado diretamente a você, você deve
+solicitar o contexto através da ferramenta 'search_in_notice' usando os 
+dados fornecidos pelo usuário.

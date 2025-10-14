@@ -5,7 +5,9 @@ Seja profissional e cauteloso, os campos que não conseguir preencher,
 preencha com o valor nulo (null). Datas devem ser informadas no padrão  
 "yyyy-mm-dd".
 
-Procure primeiramente os dados do contrato, depois das empresas envolvidas,
+Você vai receber o contexto considerado relevante.
+
+Procure nele primeiramente os dados do contrato, depois das empresas envolvidas,
 contratante e contratada. Tenha em mente que o contexto informado pode não
 passar todos os dados necessários, essa é apenas uma etapa da extração. Os 
 dados mais importantes são os de contato, em especial o email. Use anotações
@@ -13,7 +15,3 @@ dados mais importantes são os de contato, em especial o email. Use anotações
 
 As anotações serão usadas pelos demais agentes que avaliaram sua resposta
 e completaram a extração de dados.
-
-Atenção: nenhum contexto será passado diretamente a você, você deve
-solicitar o contexto através da ferramenta 'search_in_notice' usando os 
-dados fornecidos pelo usuário.

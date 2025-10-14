@@ -1,11 +1,8 @@
 package ufrn.imd.notices.services;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.memory.ChatMemoryRepository;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -14,13 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
-import ufrn.imd.notices.agents.Prompts;
+import ufrn.imd.notices.agents.NoticesTools;
 import ufrn.imd.notices.dto.NoticeReferenceDTO;
-import ufrn.imd.notices.dto.extraction.ExtractedNoticeDTO;
 import ufrn.imd.notices.models.Notice;
-import ufrn.imd.notices.repository.VectorStoreRepository;
 
 @Service
 public class ExtractionService {
@@ -28,24 +23,17 @@ public class ExtractionService {
     ExtractionService.class
   );
 
-  private Prompts prompts;
-  private ChatClient client;
-  private VectorStoreRepository vectors;
+  private NoticesTools tools;
   private JobLauncher launcher;
   private Job extract;
 
   @Autowired
   public ExtractionService(
-    Prompts prompts,
-    ChatClient client,
-    ChatMemoryRepository memory,
-    VectorStoreRepository vectors,
+    NoticesTools tools,
     @Lazy JobLauncher launcher,
     @Lazy Job extract
   ) {
-    this.prompts = prompts;
-    this.client = client;
-    this.vectors = vectors;
+    this.tools = tools;
     this.launcher = launcher;
     this.extract = extract;
   };
@@ -73,5 +61,16 @@ public class ExtractionService {
     } catch (Exception e) {
       e.printStackTrace();
     };
+  };
+
+  public void extract(Notice notice) throws JsonProcessingException {
+    NoticeReferenceDTO reference = new NoticeReferenceDTO(
+      notice.getId(),
+      notice.getVersion(),
+      notice.getType(),
+      notice.getStatus()
+    );
+
+    this.tools.extract(reference);
   };
 };

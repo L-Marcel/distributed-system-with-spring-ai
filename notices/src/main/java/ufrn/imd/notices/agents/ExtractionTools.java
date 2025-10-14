@@ -1,4 +1,4 @@
-package ufrn.imd.notices.agents.extraction;
+package ufrn.imd.notices.agents;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,8 +16,6 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import ufrn.imd.notices.agents.Prompts;
-import ufrn.imd.notices.dto.NoticeReferenceDTO;
 import ufrn.imd.notices.dto.extraction.ExtractedContractDTO;
 import ufrn.imd.notices.dto.extraction.ExtractedNoticeDTO;
 import ufrn.imd.notices.dto.extraction.ExtractedNoticeTypeDTO;
@@ -232,34 +230,33 @@ public class ExtractionTools {
     return contract;
   };
 
-  public ExtractedNoticeDTO extract(
-    NoticeReferenceDTO reference
+  @Tool(
+    name = "save_extracted_notice", 
+    description = """
+      Atualiza um edital com base nos dados extraídos de seu 
+      arquivo.
+    """
+  ) public void saveExtractedNotice(
+    ExtractedNoticeDTO notice
   ) {
-    ExtractedNoticeDTO result = new ExtractedNoticeDTO(
-      reference.id(),
-      reference.version(),
-      reference.status(),
-      reference.type(),
-      null,
-      null
-    );
-
-    // TODO - Extract with chat memory
-
     try {
       log.debug(
-      "Extraction result: \n{}", 
-        new ObjectMapper()
-          .writerWithDefaultPrettyPrinter()
-          .writeValueAsString(result)
+        """
+        Tool 'save_extracted_notice' returned:
+        
+        {}
+        """,
+        this.writer.writeValueAsString(notice)
       );
     } catch (Exception e) {
       log.debug(
-      "Extraction result: \n{}", 
-        result
+        """
+        Tool 'save_extracted_notice' returned:
+        
+        {}
+        """,
+        notice
       );
     };
-
-    return result;
   };
 };

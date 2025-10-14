@@ -9,10 +9,8 @@ O segundo apenas apresenta um responsável (COMMON) e faz parte
 de um processo seletivo. O terceiro é destinado a qualquer um
 que não seja um dos dois anteriores (UNKNOWN).
 
-Identifique se há contratante e contratada, se tiver, é um contrato,
-caso contrário, procure por um responsável e veja se é um processo
-seletivo. Se não conseguir identificar, mantenha como desconhecido.
+Você vai receber o contexto considerado relevante.
 
-Atenção: nenhum contexto será passado diretamente a você, você deve
-solicitar o contexto através da ferramenta 'search_in_notice' usando os 
-dados fornecidos pelo usuário.
+Identifique se há nele contratante e contratada, se tiver, é um contrato.
+Caso contrário, procure por um responsável e veja se é um processo
+seletivo. Se não conseguir identificar, mantenha como desconhecido.

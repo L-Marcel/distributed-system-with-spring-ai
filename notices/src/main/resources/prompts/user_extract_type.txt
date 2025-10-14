@@ -1,2 +1,1 @@
-Identifique o tipo do edital de versão {version} e id {id} buscando
-informações sobre "contrato", "contratante" e "contratado".
+Identifique o tipo do edital.

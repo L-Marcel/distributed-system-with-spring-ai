@@ -1,3 +1,1 @@
-Extraia os dados do contrato do edital de versão {version} e 
-id {id} buscando informações sobre "contrato", "contratante" 
-e "contratado".
+Extraia os dados do contrato do edital.

@@ -83,17 +83,17 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
-			<artifactId>spring-ai-starter-model-openai</artifactId>
+			<artifactId>spring-ai-openai</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.zalando</groupId>
 			<artifactId>logbook-spring-boot-starter</artifactId>
 			<version>3.9.0</version>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency> -->
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>

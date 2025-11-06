@@ -20,10 +20,11 @@
     <logbook.version>3.9.0</logbook.version>
 	</properties>
   <modules>
-    <module>config</module>
+    <module>config-server</module>
     <module>notices</module>
     <module>gateway</module>
     <module>eureka</module>
+    <module>extraction-mcp</module>
   </modules>
   <dependencyManagement>
     <dependencies>
@@ -63,7 +64,6 @@
         <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
-          <plugin>
           <configuration>
             <excludes>
               <exclude>
@@ -73,7 +73,6 @@
             </excludes>
           </configuration>
         </plugin>
-      </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>

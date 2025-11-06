@@ -1,4 +1,4 @@
-package ufrn.imd.notices.configurations;
+package ufrn.imd.extraction.configurations;
 
 import java.net.http.HttpClient;
 
@@ -18,10 +18,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
-import ufrn.imd.notices.agents.NoticesTools;
+import ufrn.imd.extraction.tools.NoticesTools;
 
 @Configuration
-// TODO - @PropertiesConfiguration para o agente, sla, temperature
 public class AiConfiguration {
   @Value("${spring.ai.openai.api-key}")
   private String apiKey;

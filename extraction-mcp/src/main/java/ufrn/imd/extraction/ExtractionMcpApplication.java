@@ -1,0 +1,28 @@
+package ufrn.imd.extraction;
+
+import org.springframework.ai.tool.ToolCallbackProvider;
+import org.springframework.ai.tool.method.MethodToolCallbackProvider;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import ufrn.imd.extraction.tools.ExtractionTools;
+import ufrn.imd.extraction.tools.NoticesTools;
+
+@SpringBootApplication
+public class ExtractionMcpApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(ExtractionMcpApplication.class, args);
+	};
+
+	@Bean
+	public ToolCallbackProvider regSigaaTools(
+		ExtractionTools extractionTools,
+		NoticesTools noticesTools
+	) {
+		return MethodToolCallbackProvider
+			.builder()
+			.toolObjects(extractionTools, noticesTools)
+			.build();
+	};
+};

@@ -11,6 +11,7 @@ import org.springframework.ai.openai.OpenAiEmbeddingModel;
 import org.springframework.ai.openai.OpenAiEmbeddingOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -20,6 +21,8 @@ import org.springframework.web.client.RestClient;
 import ufrn.imd.notices.agents.NoticesTools;
 
 @Configuration
+// TODO - @RefreshScope?
+// TODO - @PropertiesConfiguration para o agente, sla, temperature
 public class AiConfiguration {
   @Value("${spring.ai.openai.api-key}")
   private String apiKey;

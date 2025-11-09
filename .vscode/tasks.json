@@ -1,0 +1,101 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Clean & Install",
+      "type": "shell",
+      "command": "mvn clean install",
+      "isBackground": true,
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Config Server",
+      "type": "shell",
+      "command": "mvn spring-boot:run -pl config-server",
+      "isBackground": true,
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Eureka Server 1",
+      "type": "shell",
+      "command": "mvn spring-boot:run -pl eureka -Dspring-boot.run.arguments=--spring.profiles.active=dev,server1",
+      "isBackground": true,
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Eureka Server 2",
+      "type": "shell",
+      "command": "mvn spring-boot:run -pl eureka -Dspring-boot.run.arguments=--spring.profiles.active=dev,server2",
+      "isBackground": true,
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Eureka Server 3",
+      "type": "shell",
+      "command": "mvn spring-boot:run -pl eureka -Dspring-boot.run.arguments=--spring.profiles.active=dev,server3",
+      "isBackground": true,
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Gateway Server",
+      "type": "shell",
+      "command": "mvn spring-boot:run -pl gateway",
+      "isBackground": true,
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Extraction MCP Server",
+      "type": "shell",
+      "command": "mvn spring-boot:run -pl extraction-mcp",
+      "isBackground": true,
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Notices Server",
+      "type": "shell",
+      "command": "mvn spring-boot:run -pl notices",
+      "isBackground": true,
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "new"
+      }
+    }
+  ]
+}

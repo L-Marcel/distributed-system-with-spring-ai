@@ -1,0 +1,5 @@
+- Descobrir se o Extraction MCP server está inciando corretamente
+- Fazer o Notices server conectar-se com sucesso aos MCPs [documentação](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html#_transport_support)
+  - Extraction MCP server [documentação](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-server-boot-starter-docs.html#_features_and_capabilities)
+  - Mailtrap MCP server [repositório](https://github.com/mailtrap/mailtrap-mcp?tab=readme-ov-file)
+- Fazer a IA usar as tools corretamente.

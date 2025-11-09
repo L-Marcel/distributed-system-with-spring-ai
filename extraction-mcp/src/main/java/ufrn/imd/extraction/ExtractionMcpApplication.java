@@ -16,7 +16,7 @@ public class ExtractionMcpApplication {
 	};
 
 	@Bean
-	public ToolCallbackProvider regSigaaTools(
+	public ToolCallbackProvider toolCallbackProvider(
 		ExtractionTools extractionTools,
 		NoticesTools noticesTools
 	) {

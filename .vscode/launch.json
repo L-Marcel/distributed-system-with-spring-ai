@@ -1,0 +1,61 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "EurekaApplication",
+      "request": "launch",
+      "mainClass": "ufrn.imd.eureka.EurekaApplication",
+      "projectName": "eureka"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-ConfigApplication<config-server>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "ufrn.imd.config.ConfigApplication",
+      "projectName": "config-server",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-EurekaApplication<eureka>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "ufrn.imd.eureka.EurekaApplication",
+      "projectName": "eureka",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-GatewayApplication<gateway>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "ufrn.imd.gateway.GatewayApplication",
+      "projectName": "gateway",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-ExtractionMcpApplication<extraction-mcp>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "ufrn.imd.extraction.ExtractionMcpApplication",
+      "projectName": "extraction-mcp",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-NoticesAgentApplication<notices>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "ufrn.imd.notices.NoticesAgentApplication",
+      "projectName": "notices",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

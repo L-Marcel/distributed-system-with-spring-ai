@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 *.env
 secret.properties
+mcp-servers.json
 
 ### STS ###
 .apt_generated

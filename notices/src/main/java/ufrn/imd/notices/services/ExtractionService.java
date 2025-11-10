@@ -2,7 +2,8 @@ package ufrn.imd.notices.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -12,8 +13,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
-import ufrn.imd.notices.agents.NoticesTools;
+import ufrn.imd.notices.Prompts;
 import ufrn.imd.notices.dto.NoticeReferenceDTO;
 import ufrn.imd.notices.models.Notice;
 
@@ -23,19 +26,28 @@ public class ExtractionService {
     ExtractionService.class
   );
 
-  private NoticesTools tools;
+  private Prompts prompts;
+  private ObjectWriter writer;
+  private ChatClient client;
+  private SyncMcpToolCallbackProvider tools;
   private JobLauncher launcher;
   private Job extract;
 
   @Autowired
   public ExtractionService(
-    NoticesTools tools,
     @Lazy JobLauncher launcher,
-    @Lazy Job extract
+    @Lazy Job extract,
+    SyncMcpToolCallbackProvider tools,
+    ObjectMapper mapper,
+    ChatClient client,
+    Prompts prompts
   ) {
-    this.tools = tools;
     this.launcher = launcher;
     this.extract = extract;
+    this.tools = tools;
+    this.client = client;
+    this.writer = mapper.writerWithDefaultPrettyPrinter();
+    this.prompts = prompts;
   };
 
   public void request(Notice notice) {
@@ -71,6 +83,33 @@ public class ExtractionService {
       notice.getStatus()
     );
 
-    this.tools.extract(reference);
+    String referenceJson = this.writer.writeValueAsString(
+      reference
+    );
+
+    log.debug(
+      """
+      Tool 'extract_notice' requested with params:
+
+      Reference: '{}'
+      """,
+      referenceJson
+    );
+
+    String content = this.client.prompt()
+      .system(
+        this.prompts.get("system_extract_notice")
+      ).user((prompt) -> 
+        prompt.text(
+          this.prompts.get("user_extract_notice")
+        ).param("reference", referenceJson)
+      ).toolCallbacks(this.tools.getToolCallbacks())
+      .call()
+      .content();
+    
+    log.debug(
+      "Extraction result: \n{}", 
+      content
+    );
   };
 };

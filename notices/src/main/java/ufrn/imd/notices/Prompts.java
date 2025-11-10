@@ -1,4 +1,4 @@
-package ufrn.imd.notices.agents;
+package ufrn.imd.notices;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;

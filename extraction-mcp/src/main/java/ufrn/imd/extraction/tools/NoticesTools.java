@@ -40,16 +40,14 @@ public class NoticesTools {
   public NoticesTools(
     ObjectMapper mapper,
     Prompts prompts,
-    @Lazy
-    @Qualifier(value = "extractionChatClient")
-    ChatClient extractionChatClient,
+    ChatClient client,
     VectorStoreRepository vectors,
     ChatMemoryRepository memories,
     ExtractionTools tools
   ) {
     this.writer = mapper.writerWithDefaultPrettyPrinter();
     this.prompts = prompts;
-    this.client = extractionChatClient;
+    this.client = client;
     this.momories = memories;
     this.tools = tools;
   };

@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import ufrn.imd.notices.configurations.AppConfiguration;
 
 @RestController
-@RequestMapping("/configuration")
-public class ConfigurationsController {
+@RequestMapping("/details")
+public class DetailsController {
   private AppConfiguration configuration;
   private SyncMcpToolCallbackProvider tools;
 
   @Autowired
-  public ConfigurationsController(
+  public DetailsController(
     AppConfiguration configuration,
     SyncMcpToolCallbackProvider tools
   ) {

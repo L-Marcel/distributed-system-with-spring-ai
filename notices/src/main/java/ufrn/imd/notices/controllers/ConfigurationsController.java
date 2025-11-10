@@ -3,8 +3,6 @@ package ufrn.imd.notices.controllers;
 import java.util.List;
 
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
-import org.springframework.ai.mcp.client.autoconfigure.properties.McpClientCommonProperties.Toolcallback;
-import org.springframework.ai.tool.ToolCallback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

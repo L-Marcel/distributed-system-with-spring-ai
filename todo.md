@@ -1,1 +1,2 @@
-- OpenFeign.
+- Resolver loop de chamada de tools
+- Resolver timeout de chamada de tools (chamada demora muito)

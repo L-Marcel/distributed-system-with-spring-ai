@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import ufrn.imd.notices.dto.NoticeBasicReferenceDTO;
 import ufrn.imd.notices.dto.NoticeReferenceDTO;
 import ufrn.imd.notices.models.Notice;
 import ufrn.imd.notices.services.ExtractionsService;
@@ -49,7 +50,12 @@ public class NoticesController {
       file.getSize()
     );
 
-    this.extractions.request(notice);
+    NoticeBasicReferenceDTO basicReference = new NoticeBasicReferenceDTO(
+      notice.getId(),
+      notice.getVersion()
+    );
+
+    this.extractions.request(basicReference);
 
     NoticeReferenceDTO reference = new NoticeReferenceDTO(
       notice.getId(),
@@ -78,7 +84,13 @@ public class NoticesController {
       file.getSize()
     );
 
-    this.extractions.request(notice);
+    NoticeBasicReferenceDTO basicReference = new NoticeBasicReferenceDTO(
+      notice.getId(),
+      notice.getVersion()
+    );
+
+    this.extractions.request(basicReference);
+
 
     NoticeReferenceDTO reference = new NoticeReferenceDTO(
       notice.getId(),

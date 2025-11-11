@@ -1,100 +1,81 @@
 {
   "version": "2.0.0",
   "tasks": [
-    {
-      "label": "Clean & Install",
-      "type": "shell",
-      "command": "mvn clean install",
-      "isBackground": true,
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "new"
-      }
-    },
+
     {
       "label": "Config Server",
       "type": "shell",
-      "command": "mvn spring-boot:run -pl config-server",
+      "command": "java -jar config-server/target/config-server-*.jar",
       "isBackground": true,
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "new"
-      }
+      "presentation": { "echo": true, "reveal": "always", "panel": "new" },
+      "dependsOn": ["Build All Services"]
     },
     {
       "label": "Eureka Server 1",
       "type": "shell",
-      "command": "mvn spring-boot:run -pl eureka -Dspring-boot.run.arguments=--spring.profiles.active=dev,server1",
+      "command": "java -jar eureka/target/eureka-*.jar --spring.profiles.active=dev,server1",
       "isBackground": true,
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "new"
-      }
+      "presentation": { "echo": true, "reveal": "always", "panel": "new" },
+      "dependsOn": ["Build All Services"]
     },
     {
       "label": "Eureka Server 2",
       "type": "shell",
-      "command": "mvn spring-boot:run -pl eureka -Dspring-boot.run.arguments=--spring.profiles.active=dev,server2",
+      "command": "java -jar eureka/target/eureka-*.jar --spring.profiles.active=dev,server2",
       "isBackground": true,
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "new"
-      }
+      "presentation": { "echo": true, "reveal": "always", "panel": "new" },
+      "dependsOn": ["Build All Services"]
     },
     {
       "label": "Eureka Server 3",
       "type": "shell",
-      "command": "mvn spring-boot:run -pl eureka -Dspring-boot.run.arguments=--spring.profiles.active=dev,server3",
+      "command": "java -jar eureka/target/eureka-*.jar --spring.profiles.active=dev,server3",
       "isBackground": true,
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "new"
-      }
+      "presentation": { "echo": true, "reveal": "always", "panel": "new" },
+      "dependsOn": ["Build All Services"]
     },
     {
       "label": "Gateway Server",
       "type": "shell",
-      "command": "mvn spring-boot:run -pl gateway",
+      "command": "java -jar gateway/target/gateway-*.jar",
       "isBackground": true,
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "new"
-      }
+      "presentation": { "echo": true, "reveal": "always", "panel": "new" },
+      "dependsOn": ["Build All Services"]
     },
     {
-      "label": "Extraction MCP Server",
+      "label": "Extractions MCP Server",
       "type": "shell",
-      "command": "mvn spring-boot:run -pl extractions-mcp",
+      "command": "java -jar extractions-mcp/target/extractions-mcp-*.jar",
       "isBackground": true,
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "new"
-      }
+      "presentation": { "echo": true, "reveal": "always", "panel": "new" },
+      "dependsOn": ["Build All Services"]
+    },
+    {
+      "label": "Extractions Server",
+      "type": "shell",
+      "command": "java -jar extractions/target/extractions-*.jar",
+      "isBackground": true,
+      "presentation": { "echo": true, "reveal": "always", "panel": "new" },
+      "dependsOn": ["Build All Services"]
     },
     {
       "label": "Notices Server",
       "type": "shell",
-      "command": "mvn spring-boot:run -pl notices",
+      "command": "java -jar notices/target/notices-*.jar",
       "isBackground": true,
+      "presentation": { "echo": true, "reveal": "always", "panel": "new" },
+      "dependsOn": ["Build All Services"]
+    },
+    {
+      "label": "Clean & Install",
+      "type": "shell",
+      "command": "mvn clean install",
       "presentation": {
         "echo": true,
         "reveal": "always",
         "focus": true,
-        "panel": "new"
+        "panel": "shared",
+        "clear": true
       }
     }
   ]

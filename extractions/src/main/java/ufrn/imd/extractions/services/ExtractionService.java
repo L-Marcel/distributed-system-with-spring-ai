@@ -100,10 +100,10 @@ public class ExtractionService {
       .prompt()
       .toolCallbacks(this.tools)
       .system(
-        this.prompts.get("system_extract_notice")
+        this.prompts.get("system_notice")
       ).user((prompt) -> 
         prompt.text(
-          this.prompts.get("user_extract_notice")
+          this.prompts.get("user_notice")
         ).param("reference", referenceJson)
       )
       .call()

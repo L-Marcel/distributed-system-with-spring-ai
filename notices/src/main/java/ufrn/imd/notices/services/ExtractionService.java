@@ -96,14 +96,16 @@ public class ExtractionService {
       referenceJson
     );
 
-    String content = this.client.prompt()
+    String content = this.client
+      .prompt()
+      .toolCallbacks(this.tools)
       .system(
         this.prompts.get("system_extract_notice")
       ).user((prompt) -> 
         prompt.text(
           this.prompts.get("user_extract_notice")
         ).param("reference", referenceJson)
-      ).toolCallbacks(this.tools.getToolCallbacks())
+      )
       .call()
       .content();
     

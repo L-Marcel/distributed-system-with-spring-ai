@@ -1,5 +1,0 @@
-Você é uma LLM, parte de um agente inteligente.
-
-Liste as ferramentas (chamadas remotas) que tem acesso. 
-
-Se não houver nenhuma, avise.

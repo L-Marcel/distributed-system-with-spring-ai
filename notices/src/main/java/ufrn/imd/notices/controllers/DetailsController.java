@@ -1,8 +1,5 @@
 package ufrn.imd.notices.controllers;
 
-import java.util.List;
-
-import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,30 +12,16 @@ import ufrn.imd.notices.configurations.AppConfiguration;
 @RequestMapping("/details")
 public class DetailsController {
   private AppConfiguration configuration;
-  private SyncMcpToolCallbackProvider tools;
 
   @Autowired
   public DetailsController(
-    AppConfiguration configuration,
-    SyncMcpToolCallbackProvider tools
+    AppConfiguration configuration
   ) {
     this.configuration = configuration;
-    this.tools = tools;
   };
 
   @GetMapping("/version")
   public ResponseEntity<String> getVersion() {
     return ResponseEntity.ok(this.configuration.getVersion());
-  };
-
-  @GetMapping("/tools")
-  public ResponseEntity<List<String>> getTools() {
-    return ResponseEntity.ok(
-      List.of(
-        tools.getToolCallbacks()
-      ).stream()
-        .map((tool) -> tool.getToolDefinition().name())
-        .toList()
-    );
   };
 };

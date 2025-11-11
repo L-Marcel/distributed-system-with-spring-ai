@@ -18,22 +18,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ufrn.imd.notices.dto.NoticeReferenceDTO;
 import ufrn.imd.notices.models.Notice;
-import ufrn.imd.notices.services.ExtractionService;
+import ufrn.imd.notices.services.ExtractionsService;
 import ufrn.imd.notices.services.NoticesService;
 
 @RestController
 @RequestMapping
 public class NoticesController {
   private NoticesService notices;
-  private ExtractionService extraction;
+  private ExtractionsService extractions;
 
   @Autowired
   public NoticesController(
     NoticesService notices,
-    ExtractionService extraction
+    ExtractionsService extractions
   ) {
     this.notices = notices;
-    this.extraction = extraction;
+    this.extractions = extractions;
   };
 
   @PostMapping
@@ -49,7 +49,7 @@ public class NoticesController {
       file.getSize()
     );
 
-    this.extraction.request(notice);
+    this.extractions.request(notice);
 
     NoticeReferenceDTO reference = new NoticeReferenceDTO(
       notice.getId(),
@@ -78,7 +78,7 @@ public class NoticesController {
       file.getSize()
     );
 
-    this.extraction.request(notice);
+    this.extractions.request(notice);
 
     NoticeReferenceDTO reference = new NoticeReferenceDTO(
       notice.getId(),

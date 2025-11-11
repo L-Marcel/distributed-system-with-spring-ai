@@ -68,6 +68,8 @@ public class NoticesService {
       filename
     );
 
+    //exists by filename
+
     Notice notice = new Notice();
     notice.setFilename(filename);
     notice.setBytes(bytes);
@@ -177,14 +179,6 @@ public class NoticesService {
 
   public Notice findById(UUID id) {
     return this.notices.findById(id)
-      .orElseThrow(NoitceNotFound::new);
-  };
-
-  public Notice findByIdAndVersion(
-    UUID id,
-    Integer version
-  ) {
-    return this.notices.findByIdAndVersion(id, version)
       .orElseThrow(NoitceNotFound::new);
   };
 };

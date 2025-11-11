@@ -9,9 +9,4 @@ import org.springframework.stereotype.Repository;
 import ufrn.imd.notices.models.Notice;
 
 @Repository
-public interface NoticesRepository extends JpaRepository<Notice, UUID> {
-  public Optional<Notice> findByIdAndVersion(
-    UUID id,
-    Integer version
-  );
-};
+public interface NoticesRepository extends JpaRepository<Notice, UUID> {};

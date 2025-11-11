@@ -1,2 +1,1 @@
-- Fazer a IA usar as tools corretamente;
 - OpenFeign.

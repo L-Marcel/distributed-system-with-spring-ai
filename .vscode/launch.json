@@ -39,20 +39,30 @@
     },
     {
       "type": "java",
-      "name": "Spring Boot-ExtractionMcpApplication<extraction-mcp>",
+      "name": "Spring Boot-ExtractionMcpApplication<extractions-mcp>",
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "mainClass": "ufrn.imd.extraction.ExtractionMcpApplication",
-      "projectName": "extraction-mcp",
+      "projectName": "extractions-mcp",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
     },
     {
       "type": "java",
-      "name": "Spring Boot-NoticesAgentApplication<notices>",
+      "name": "Spring Boot-NoticesAgentApplication<extractions>",
       "request": "launch",
       "cwd": "${workspaceFolder}",
-      "mainClass": "ufrn.imd.notices.NoticesAgentApplication",
+      "mainClass": "ufrn.imd.extractions.ExtractionsApplication",
+      "projectName": "extractions",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-NoticesApplication<notices>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "ufrn.imd.notices.NoticesApplication",
       "projectName": "notices",
       "args": "",
       "envFile": "${workspaceFolder}/.env"

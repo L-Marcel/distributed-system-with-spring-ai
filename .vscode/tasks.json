@@ -76,7 +76,7 @@
     {
       "label": "Extraction MCP Server",
       "type": "shell",
-      "command": "mvn spring-boot:run -pl extraction-mcp",
+      "command": "mvn spring-boot:run -pl extractions-mcp",
       "isBackground": true,
       "presentation": {
         "echo": true,

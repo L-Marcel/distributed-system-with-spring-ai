@@ -1,4 +1,4 @@
-package ufrn.imd.notices.repository;
+package ufrn.imd.extractions.repository;
 
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +8,7 @@ import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.filter.Filter;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import lombok.Getter;
@@ -16,6 +17,7 @@ import lombok.Getter;
 public class VectorStoreRepository {
   @Getter
   private VectorStore store;
+  
   
   public VectorStoreRepository(
     VectorStore store

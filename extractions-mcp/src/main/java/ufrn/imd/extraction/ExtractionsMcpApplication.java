@@ -6,9 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import ufrn.imd.extraction.tools.ExtractionTools;
-import ufrn.imd.extraction.tools.NoticesTools;
-
 @SpringBootApplication
 public class ExtractionsMcpApplication {
 	public static void main(String[] args) {
@@ -17,12 +14,11 @@ public class ExtractionsMcpApplication {
 
 	@Bean
 	public ToolCallbackProvider toolCallbackProvider(
-		ExtractionTools extractionTools,
-		NoticesTools noticesTools
+		Tools tools
 	) {
 		return MethodToolCallbackProvider
 			.builder()
-			.toolObjects(extractionTools, noticesTools)
+			.toolObjects(tools)
 			.build();
 	};
 };

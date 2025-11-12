@@ -1,1 +1,0 @@
-Extraia os dados do contrato do edital.

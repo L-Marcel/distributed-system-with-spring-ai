@@ -1,3 +1,0 @@
-Extraia os dados faltantes do seguinte edital:
-
-{reference}

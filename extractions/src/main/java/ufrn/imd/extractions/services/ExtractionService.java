@@ -1,8 +1,15 @@
 package ufrn.imd.extractions.services;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.ChatMemoryRepository;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
@@ -18,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import ufrn.imd.extractions.Prompts;
 import ufrn.imd.extractions.dto.NoticeReferenceDTO;
+import ufrn.imd.extractions.dto.NoticeReferenceWithNotesDTO;
 import ufrn.imd.extractions.models.Notice;
 
 @Service
@@ -30,6 +38,7 @@ public class ExtractionService {
   private ObjectWriter writer;
   private ChatClient client;
   private SyncMcpToolCallbackProvider tools;
+  private ChatMemoryRepository momories;
   private JobLauncher launcher;
   private Job extract;
   
@@ -38,6 +47,7 @@ public class ExtractionService {
     @Lazy JobLauncher launcher,
     @Lazy Job extract,
     SyncMcpToolCallbackProvider tools,
+    ChatMemoryRepository momories,
     ObjectMapper mapper,
     ChatClient client,
     Prompts prompts
@@ -76,11 +86,12 @@ public class ExtractionService {
   };
 
   public void extract(Notice notice) throws JsonProcessingException {
-    NoticeReferenceDTO reference = new NoticeReferenceDTO(
+    NoticeReferenceWithNotesDTO reference = new NoticeReferenceWithNotesDTO(
       notice.getId(),
       notice.getVersion(),
       notice.getType(),
-      notice.getStatus()
+      notice.getStatus(),
+      notice.getNotes()
     );
 
     String referenceJson = this.writer.writeValueAsString(
@@ -96,9 +107,22 @@ public class ExtractionService {
       referenceJson
     );
 
+    ChatMemory memory = MessageWindowChatMemory.builder()
+      .chatMemoryRepository(this.momories)
+      .maxMessages(12)
+      .build();
+
+    List<Advisor> advisors = List.of(
+      MessageChatMemoryAdvisor
+        .builder(memory)
+        .conversationId(reference.id().toString())
+        .build()
+    );
+
     String content = this.client
       .prompt()
       .toolCallbacks(this.tools)
+      .advisors(advisors)
       .system(
         this.prompts.get("system_notice")
       ).user((prompt) -> 

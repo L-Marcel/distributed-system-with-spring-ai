@@ -1,11 +1,13 @@
-package ufrn.imd.extraction.tools;
+package ufrn.imd.extraction;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
@@ -16,34 +18,36 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import ufrn.imd.extraction.Prompts;
+import jakarta.transaction.Transactional;
 import ufrn.imd.extraction.dto.extraction.ExtractedContractDTO;
 import ufrn.imd.extraction.dto.extraction.ExtractedNoticeDTO;
-import ufrn.imd.extraction.dto.extraction.ExtractedNoticeTypeDTO;
+import ufrn.imd.extraction.errors.NoticeNotFound;
+import ufrn.imd.extraction.models.Contract;
+import ufrn.imd.extraction.models.Note;
+import ufrn.imd.extraction.models.Notice;
 import ufrn.imd.extraction.repository.VectorStoreRepository;
+import ufrn.imd.extraction.repository.NoticesRepository;
 
 @Component
-public class ExtractionTools {
+public class Tools {
   private static final Logger log = LoggerFactory.getLogger(
-    ExtractionTools.class
+    Tools.class
   );
 
   private ObjectWriter writer;
-  private Prompts prompts;
-  private ChatClient client;
   private VectorStoreRepository vectors;
+  private NoticesRepository notices;
+
   
   @Autowired
-  public ExtractionTools(
+  public Tools(
     ObjectMapper mapper,
-    Prompts prompts,
-    ChatClient client,
-    VectorStoreRepository vectors
+    VectorStoreRepository vectors,
+    NoticesRepository notices
   ) {
     this.writer = mapper.writerWithDefaultPrettyPrinter();
-    this.prompts = prompts;
-    this.client = client;
     this.vectors = vectors;
+    this.notices = notices;
   };
 
   private String documentsToString(
@@ -130,134 +134,99 @@ public class ExtractionTools {
   };
 
   @Tool(
-    name = "extract_notice_type", 
+    name = "save_notice", 
     description = """
-      Recebe parte do contexto de um edital e, a partir dele, 
-      tenta extrair o tipo do edital. No caso de não conseguir identificar,
-      retorna UNKNOWN.
+      Atualiza um edital com base nos dados extraídos.
+      Retorna uma mensagem de feedback.
     """
-  )
-  public ExtractedNoticeTypeDTO extractNoticeType(
+  ) @Transactional 
+  public String saveNotice(
     @ToolParam(
-      required = true, 
-      description = "A parte do edital a ser usada como contexto."
-    ) String context
-  ) {
-    log.debug(
-      """
-      Tool 'extract_notice_type' requested with params:
-
-      Context: '{}'
-      """,
-      context
-    );
-
-    ExtractedNoticeTypeDTO type = this.client.prompt()
-      .system(
-        this.prompts.get("system_extract_type")
-      ).user((prompt) -> 
-        prompt.text(
-          this.prompts.get("user_extract_type")
-        ).param("context", context)
-      ).call()
-      .entity(ExtractedNoticeTypeDTO.class);
-
-    log.debug(
-      """
-      Tool 'extract_notice_type' returned:
-      
-      {}
-      """,
-      type
-    );
-
-    return type;
-  };
-
-  @Tool(
-    name = "extract_notice_contract", 
-    description = """
-      Recebe parte do contexto de um edital e, a partir dele, 
-      tenta extrair dados do edital. Dados não identificados
-      são retornados como null. Resposta acompanha algumas
-      observações.
-    """
-  )
-  public ExtractedContractDTO extractNoticeContract(
-    @ToolParam(
-      required = true, 
-      description = "A parte do edital a ser usada como contexto."
-    ) String context
-  ) {
-    log.debug(
-      """
-      Tool 'extract_notice_contract' requested with params:
-
-      Context: '{}'
-      """,
-      context
-    );
-    
-    ExtractedContractDTO contract = this.client.prompt()
-      .system(
-        this.prompts.get("system_extract_contract")
-      ).user((prompt) -> 
-        prompt.text(
-          this.prompts.get("user_extract_contract")
-        ).param("context", context)
-      ).call()
-      .entity(ExtractedContractDTO.class);
-
-    try {
-      log.debug(
-        """
-        Tool 'search_in_notice' returned:
-        
-        {}
-        """,
-        this.writer.writeValueAsString(contract)
-      );
-    } catch (Exception e) {
-      log.debug(
-        """
-        Tool 'search_in_notice' returned:
-        
-        {}
-        """,
-        contract
-      );
-    };
-
-    return contract;
-  };
-
-  @Tool(
-    name = "save_extracted_notice", 
-    description = """
-      Atualiza um edital com base nos dados extraídos de seu 
-      arquivo.
-    """
-  ) public void saveExtractedNotice(
-    ExtractedNoticeDTO notice
+      required = true,
+      description = "Dados extraídos do edital"
+    ) ExtractedNoticeDTO notice
   ) {
     try {
       log.debug(
         """
-        Tool 'save_extracted_notice' returned:
+        Tool 'save_notice' received:
         
         {}
         """,
         this.writer.writeValueAsString(notice)
       );
+
+      Notice _notice = this.notices.findByIdAndVersion(
+        notice.id(), 
+        notice.version()
+      ).orElseThrow(NoticeNotFound::new);
+
+      _notice.setStatus(notice.status());
+      _notice.setType(notice.type());
+
+      _notice.getNotes().addAll(notice.notes().stream().map((note) -> {
+        Note _note = new Note();
+        _note.setContent(note.content());
+        return _note;
+      }).toList());
+
+      this.notices.save(_notice);
+
+      return "Edital atualizado com sucesso.";
     } catch (Exception e) {
+      return "Falha ao atualizar o edital: " + e.getMessage();
+    }
+  };
+
+  @Tool(
+    name = "save_contract", 
+    description = """
+      Atualiza o contrato de um edital com base nos dados extraídos.
+      Retorna uma mensagem de feedback.
+    """
+  ) @Transactional 
+  public String saveContract(
+    @ToolParam(
+      required = true,
+      description = "Dados extraídos do contrato de um edital"
+    ) ExtractedContractDTO contract
+  ) {
+    try {
       log.debug(
         """
-        Tool 'save_extracted_notice' returned:
+        Tool 'save_contract' received:
         
         {}
         """,
-        notice
+        this.writer.writeValueAsString(contract)
       );
-    };
+
+      Notice notice = this.notices.findByIdAndVersion(
+        contract.notice(), 
+        contract.version()
+      ).orElseThrow(NoticeNotFound::new);
+
+      Contract _contract = notice.getContract();
+      if(_contract == null) _contract = new Contract();
+      if(contract.value() != null) _contract.setValue(contract.value());
+      if(contract.currency() != null) _contract.setCurrency(contract.currency());
+      if(contract.location() != null) _contract.setLocation(contract.location());
+
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+      if(contract.startDate() != null) _contract.setStartDate(Date.valueOf(
+        LocalDate.parse(contract.startDate(), formatter)
+      ));
+
+      if(contract.endDate() != null) _contract.setEndDate(Date.valueOf(
+        LocalDate.parse(contract.endDate(), formatter)
+      ));
+
+      notice.setContract(_contract);
+      this.notices.save(notice);
+      
+      return "Contrato atualizado com sucesso.";
+    } catch (Exception e) {
+      return "Falha ao atualizar o contrato: " + e.getMessage();
+    }
   };
 };

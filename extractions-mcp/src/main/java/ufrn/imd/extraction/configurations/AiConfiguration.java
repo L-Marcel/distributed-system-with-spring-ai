@@ -6,7 +6,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.document.MetadataMode;
 import org.springframework.ai.embedding.EmbeddingModel;
-import org.springframework.ai.model.tool.ToolCallingManager;
+import org.springframework.ai.model.tool.DefaultToolCallingManager;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiEmbeddingModel;
 import org.springframework.ai.openai.OpenAiEmbeddingOptions;
@@ -76,10 +76,12 @@ public class AiConfiguration {
   };
 
   @Bean
-  ToolCallingManager toolCallingManager() {
-    return ToolCallingManager
+  @Primary
+  public DefaultToolCallingManager defaultToolCallingManager() {
+    return DefaultToolCallingManager
       .builder()
       .toolExecutionExceptionProcessor((exception) -> {
+        System.out.println("TESTANDO");
         return String.format(
           "A ferramenta %s falhou.",
           exception.getToolDefinition().name()

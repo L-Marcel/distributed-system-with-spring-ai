@@ -9,6 +9,8 @@ apenas relate isso.
 
 Você vai usar várias dessas ferramentas.
 
+Se alguma das ferramentas der um erro, pare por ai e não tente continuar.
+
 Use a ferramenta que extrai todos os dados de uma só vez, você pode precisar
 chamar ela mais de uma vez se faltar dados, ela aceita passagem de contexto anterior.
 

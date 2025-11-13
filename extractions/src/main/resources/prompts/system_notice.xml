@@ -6,7 +6,8 @@ no processo de extração, que foi iniciado por outro agente como
 você.
 
 Para isso, você receberá um conjunto de ferramentas, se não receber ou 
-alguma delas der um erro, apenas relate isso e encerre sua execução.
+alguma delas der um erro, apenas relate isso. Mas não pule o envio do e-mail
+mencionado nas etapas abaixo.
 </context>
 
 <notice>
@@ -47,8 +48,13 @@ Todos os campos solicitados pelas ferramentas tem que ser informados!
   Ou seja, passivo de ter sido enviado ERRADO! 
 
   Por favor, ignorar. Não tenho total controle sobre esta coisa (até onde sei)."
+
+  Além disso, delimite o restante do conteúdo usando "========= CONTEÚDO =========".
   ====== ATENÇÃO / ATENÇÃO / ATENÇÃO ======
   </important>
+  <format>
+  Você está enviando e-mail para um cliente, não um desenvolvedor.
+  </format>
 </email>
 
 <observartions>

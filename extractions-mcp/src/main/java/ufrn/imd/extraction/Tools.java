@@ -137,7 +137,7 @@ public class Tools {
     name = "save_notice", 
     description = """
       Atualiza um edital com base nos dados extraídos.
-      Retorna uma mensagem de feedback.
+      Retorna uma mensagem de erro ou os dados do edital atualizado.
     """
   ) @Transactional 
   public String saveNotice(
@@ -172,17 +172,18 @@ public class Tools {
 
       this.notices.save(_notice);
 
-      return "Edital atualizado com sucesso.";
+      return this.writer.writeValueAsString(notice);
     } catch (Exception e) {
       return "Falha ao atualizar o edital: " + e.getMessage();
     }
   };
 
+  // TODO - Salvar as empresas
   @Tool(
     name = "save_contract", 
     description = """
       Atualiza o contrato de um edital com base nos dados extraídos.
-      Retorna uma mensagem de feedback.
+      Retorna uma mensagem de erro ou os dados do contrato atualziados.
     """
   ) @Transactional 
   public String saveContract(
@@ -224,7 +225,7 @@ public class Tools {
       notice.setContract(_contract);
       this.notices.save(notice);
       
-      return "Contrato atualizado com sucesso.";
+      return this.writer.writeValueAsString(contract);
     } catch (Exception e) {
       return "Falha ao atualizar o contrato: " + e.getMessage();
     }

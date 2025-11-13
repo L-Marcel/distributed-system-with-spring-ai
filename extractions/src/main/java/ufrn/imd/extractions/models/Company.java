@@ -21,7 +21,7 @@ public class Company {
   @Id
   private String cnpj;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private String legalName;
 
   @Column(nullable = true)
@@ -30,7 +30,7 @@ public class Company {
   @Column(nullable = true, unique = true)
   private String phone;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = true, unique = true)
   private String email;
   
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "hirer")

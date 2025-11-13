@@ -25,18 +25,18 @@ public class Contract {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private Double value;
   
-  @Column(nullable = false)
+  @Column(nullable = true)
   private String currency;
 
-  @Column(name = "start_date", nullable = false)
+  @Column(name = "start_date", nullable = true)
   private Date startDate;
 
   @Column(name = "end_date", nullable = true)
   private Date endDate;
-
+  
   @Column(nullable = true)
   private String location;
 
@@ -45,10 +45,11 @@ public class Contract {
   private Notice notice;
   
   @ManyToOne(optional = false)
-  @JoinColumn(name = "hired", nullable = false)
+  @JoinColumn(name = "hired", nullable = true)
   private Company hired;
 
   @ManyToOne(optional = false)
-  @JoinColumn(name = "hirer", nullable = false)
+  @JoinColumn(name = "hirer", nullable = true)
   private Company hirer;
 };
+

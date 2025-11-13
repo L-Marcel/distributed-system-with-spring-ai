@@ -63,6 +63,7 @@ public class ExtractionService {
     this.client = client;
     this.writer = mapper.writerWithDefaultPrettyPrinter();
     this.prompts = prompts;
+    this.vectors = vectors;
   };
 
   public void request(Notice notice) {

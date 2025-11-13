@@ -118,6 +118,7 @@ public class ExtractionService {
       .maxMessages(12)
       .build();
     
+    // TODO - Pergar os dados do documento especifico
     List<Advisor> advisors = List.of(
       RetrievalAugmentationAdvisor.builder()
         .queryTransformers(

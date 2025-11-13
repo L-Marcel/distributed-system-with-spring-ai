@@ -156,15 +156,14 @@ public class Tools {
         this.writer.writeValueAsString(notice)
       );
 
-      Notice _notice = this.notices.findByIdAndVersion(
-        notice.id(), 
-        notice.version()
+      Notice _notice = this.notices.findById(
+        notice.id()
       ).orElseThrow(NoticeNotFound::new);
 
       _notice.setStatus(notice.status());
       _notice.setType(notice.type());
 
-      _notice.getNotes().addAll(notice.notes().stream().map((note) -> {
+      if(notice.notes() != null) _notice.getNotes().addAll(notice.notes().stream().map((note) -> {
         Note _note = new Note();
         _note.setContent(note.content());
         return _note;
@@ -179,13 +178,14 @@ public class Tools {
   };
 
   // TODO - Salvar as empresas
+  // TODO - Voltar para o transacional
   @Tool(
     name = "save_contract", 
     description = """
       Atualiza o contrato de um edital com base nos dados extraídos.
-      Retorna uma mensagem de erro ou os dados do contrato atualziados.
+      Retorna uma mensagem de erro ou os dados do contrato e edital atualizados.
     """
-  ) @Transactional 
+  ) //@Transactional 
   public String saveContract(
     @ToolParam(
       required = true,
@@ -202,9 +202,8 @@ public class Tools {
         this.writer.writeValueAsString(contract)
       );
 
-      Notice notice = this.notices.findByIdAndVersion(
-        contract.notice(), 
-        contract.version()
+      Notice notice = this.notices.findById(
+        contract.notice()
       ).orElseThrow(NoticeNotFound::new);
 
       Contract _contract = notice.getContract();

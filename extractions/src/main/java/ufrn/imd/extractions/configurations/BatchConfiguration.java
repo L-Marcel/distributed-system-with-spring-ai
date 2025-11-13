@@ -77,13 +77,11 @@ public class BatchConfiguration extends DefaultBatchConfiguration {
   @Bean
   @StepScope
   public ItemReader<Notice> extractReader(
-    @Value("#{jobParameters['id']}") String id,
-    @Value("#{jobParameters['version']}") String version
+    @Value("#{jobParameters['id']}") String id
   ) {
     return new NoticeItemReader(
       this.notices, 
-      UUID.fromString(id),
-      Integer.parseInt(version)
+      UUID.fromString(id)
     );
   };
 

@@ -16,29 +16,24 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import ufrn.imd.notices.dto.NoticeBasicReferenceDTO;
-import ufrn.imd.notices.dto.NoticeReferenceDTO;
+import ufrn.imd.notices.dto.NoticeDTO;
 import ufrn.imd.notices.models.Notice;
-import ufrn.imd.notices.services.ExtractionsService;
 import ufrn.imd.notices.services.NoticesService;
 
 @RestController
 @RequestMapping
 public class NoticesController {
   private NoticesService notices;
-  private ExtractionsService extractions;
 
   @Autowired
   public NoticesController(
-    NoticesService notices,
-    ExtractionsService extractions
+    NoticesService notices
   ) {
     this.notices = notices;
-    this.extractions = extractions;
   };
 
   @PostMapping
-  public ResponseEntity<NoticeReferenceDTO> create(
+  public ResponseEntity<NoticeDTO> create(
     @RequestPart("file") MultipartFile file
   ) {
     List<Document> chunks = this.notices.read(file.getResource());
@@ -50,14 +45,7 @@ public class NoticesController {
       file.getSize()
     );
 
-    NoticeBasicReferenceDTO basicReference = new NoticeBasicReferenceDTO(
-      notice.getId(),
-      notice.getVersion()
-    );
-
-    this.extractions.request(basicReference);
-
-    NoticeReferenceDTO reference = new NoticeReferenceDTO(
+    NoticeDTO reference = new NoticeDTO(
       notice.getId(),
       notice.getVersion(),
       notice.getType(),
@@ -70,7 +58,7 @@ public class NoticesController {
   };
 
   @PutMapping("/{id}")
-  public ResponseEntity<NoticeReferenceDTO> update(
+  public ResponseEntity<NoticeDTO> update(
     @PathVariable UUID id,
     @RequestPart("file") MultipartFile file
   ) {
@@ -84,15 +72,7 @@ public class NoticesController {
       file.getSize()
     );
 
-    NoticeBasicReferenceDTO basicReference = new NoticeBasicReferenceDTO(
-      notice.getId(),
-      notice.getVersion()
-    );
-
-    this.extractions.request(basicReference);
-
-
-    NoticeReferenceDTO reference = new NoticeReferenceDTO(
+    NoticeDTO reference = new NoticeDTO(
       notice.getId(),
       notice.getVersion(),
       notice.getType(),

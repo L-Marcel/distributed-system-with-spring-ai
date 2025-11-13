@@ -20,11 +20,10 @@ public class NoticesService {
     this.notices = notices;
   };
 
-  public Notice findByIdAndVersion(
-    UUID id,
-    Integer version
+  public Notice findById(
+    UUID id
   ) {
-    return this.notices.findByIdAndVersion(id, version)
+    return this.notices.findById(id)
       .orElseThrow(NoitceNotFound::new);
   };
 };

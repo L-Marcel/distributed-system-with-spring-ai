@@ -11,11 +11,6 @@ public record ExtractedContractDTO(
   ) UUID notice,
 
   @ToolParam(
-    required = true,
-    description = "Versão da nóticia."
-  ) Integer version,
-
-  @ToolParam(
     required = false,
     description = "Valor do contrato."
   ) Double value,

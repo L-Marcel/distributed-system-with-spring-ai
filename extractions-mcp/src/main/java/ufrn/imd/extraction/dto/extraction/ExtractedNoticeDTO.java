@@ -16,11 +16,6 @@ public record ExtractedNoticeDTO(
 
   @ToolParam(
     required = true,
-    description = "Versão da nóticia."
-  ) Integer version,
-
-  @ToolParam(
-    required = true,
     description = """
       O novo status da nóticia. Informe apenas um dos seguintes: 
         \"PROCESSING\", 

@@ -7,7 +7,7 @@ import ufrn.imd.extractions.models.Note;
 import ufrn.imd.extractions.models.enums.NoticeStatus;
 import ufrn.imd.extractions.models.enums.NoticeType;
 
-public record NoticeReferenceWithNotesDTO(
+public record NoticeDTO(
   UUID id,
   Integer version,
   NoticeType type,

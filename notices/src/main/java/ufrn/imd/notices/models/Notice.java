@@ -37,7 +37,7 @@ public class Notice {
   @Version
   private Integer version;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false)
   private String filename;
 
   @Column(nullable = false)
@@ -48,7 +48,7 @@ public class Notice {
   private Timestamp updatedAt;
 
   @Enumerated(EnumType.STRING)
-  private NoticeStatus status = NoticeStatus.PROCESSING;
+  private NoticeStatus status = NoticeStatus.STOPPED;
 
   @Enumerated(EnumType.STRING)
   private NoticeType type = NoticeType.UNKNOWN;

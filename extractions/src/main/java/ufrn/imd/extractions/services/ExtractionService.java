@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import ufrn.imd.extractions.Prompts;
-import ufrn.imd.extractions.dto.NoticeReferenceWithNotesDTO;
+import ufrn.imd.extractions.dto.NoticeDTO;
 import ufrn.imd.extractions.models.Notice;
 import ufrn.imd.extractions.models.enums.NoticeStatus;
 import ufrn.imd.extractions.repository.VectorStoreRepository;
@@ -96,7 +96,7 @@ public class ExtractionService {
   };
 
   public void extract(Notice notice) throws JsonProcessingException {
-    NoticeReferenceWithNotesDTO reference = new NoticeReferenceWithNotesDTO(
+    NoticeDTO reference = new NoticeDTO(
       notice.getId(),
       notice.getVersion(),
       notice.getType(),

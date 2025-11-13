@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ufrn.imd.notices.errors.NoitceNotFound;
 import ufrn.imd.notices.models.Notice;
+import ufrn.imd.notices.models.enums.NoticeStatus;
 import ufrn.imd.notices.models.enums.NoticeType;
 import ufrn.imd.notices.repository.NoticesRepository;
 import ufrn.imd.notices.repository.VectorStoreRepository;
@@ -29,16 +30,19 @@ public class NoticesService {
   private TokenTextSplitter splitter;
   private VectorStoreRepository vectors;
   private NoticesRepository notices;
+  private ExtractionsService extractions;
 
   @Autowired
   public NoticesService(
     TokenTextSplitter splitter,
     VectorStoreRepository vectors,
-    NoticesRepository notices
+    NoticesRepository notices,
+    ExtractionsService extractions
   ) {
     this.splitter = splitter;
     this.vectors = vectors;
     this.notices = notices;
+    this.extractions = extractions;
   };
 
   public List<Document> read(Resource file) {
@@ -67,8 +71,6 @@ public class NoticesService {
       "Creating notice from file '{}'", 
       filename
     );
-
-    //exists by filename
 
     Notice notice = new Notice();
     notice.setFilename(filename);
@@ -101,6 +103,19 @@ public class NoticesService {
       "Vectors from notice '{}' saved",
       notice.getId()
     );
+
+    NoticeStatus status = this.extractions.request(notice.getId())
+      .getBody();
+
+    notice.setStatus(status);
+
+    this.notices.save(notice);
+
+    log.debug(
+      "Notice with id '{}' updated to status '{}'",
+      notice.getId(),
+      notice.getStatus()
+    );
     
     return notice;
   };
@@ -123,9 +138,9 @@ public class NoticesService {
 
     notice.setFilename(filename);
     notice.setType(NoticeType.UNKNOWN);
-    
-    // TODO - tirar isso depois (manter para a apresentação)
-    notice.setBytes(bytes + System.currentTimeMillis());
+    notice.setStatus(NoticeStatus.PROCESSING);
+    notice.setBytes(bytes);
+
     this.notices.saveAndFlush(notice);
 
     log.debug(
@@ -157,6 +172,19 @@ public class NoticesService {
       id
     );
 
+    NoticeStatus status = this.extractions.request(notice.getId())
+      .getBody();
+
+    notice.setStatus(status);
+
+    this.notices.save(notice);
+    
+    log.debug(
+      "Notice with id '{}' updated to status '{}'",
+      notice.getId(),
+      notice.getStatus()
+    );
+    
     return notice;
   };
 

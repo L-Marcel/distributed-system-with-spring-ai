@@ -1,1 +1,2 @@
-- Resolver loop de chamada de tools
+- Configurar circuit breakers do resilience4j
+- Configurar fallbacks do resilience4j

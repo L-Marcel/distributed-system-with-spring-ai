@@ -101,7 +101,7 @@ public class NoticesService {
       "Vectors from notice '{}' saved",
       notice.getId()
     );
-
+    
     return notice;
   };
 

@@ -1,7 +1,6 @@
 package ufrn.imd.extractions.services;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
 import org.springframework.ai.rag.preretrieval.query.transformation.RewriteQueryTransformer;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
-import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -31,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import ufrn.imd.extractions.Prompts;
 import ufrn.imd.extractions.dto.NoticeReferenceWithNotesDTO;
 import ufrn.imd.extractions.models.Notice;
+import ufrn.imd.extractions.models.enums.NoticeStatus;
 import ufrn.imd.extractions.repository.VectorStoreRepository;
 
 @Service
@@ -68,7 +67,7 @@ public class ExtractionService {
     this.vectors = vectors;
   };
 
-  public void request(Notice notice) {
+  public NoticeStatus request(Notice notice) {
     log.debug(
       "Requesting notice extraction by id '{}' and version '{}'", 
       notice.getId(),
@@ -88,9 +87,12 @@ public class ExtractionService {
         notice.getId(),
         notice.getVersion()
       );
+
+      return NoticeStatus.PROCESSING;
     } catch (Exception e) {
       e.printStackTrace();
-    };
+      return NoticeStatus.STOPPED;
+    }
   };
 
   public void extract(Notice notice) throws JsonProcessingException {

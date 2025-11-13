@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import ufrn.imd.extractions.dto.NoticeBasicReferenceDTO;
 import ufrn.imd.extractions.models.Notice;
+import ufrn.imd.extractions.models.enums.NoticeStatus;
 import ufrn.imd.extractions.services.ExtractionService;
 import ufrn.imd.extractions.services.NoticesService;
 
@@ -29,7 +30,7 @@ public class ExtractionController {
   };
 
   @PostMapping
-  public ResponseEntity<Void> extract(
+  public ResponseEntity<NoticeStatus> extract(
     @RequestBody @Valid NoticeBasicReferenceDTO body
   ) {
     Notice notice = this.notices.findByIdAndVersion(
@@ -37,9 +38,8 @@ public class ExtractionController {
       body.version()
     );
 
-    this.extraction.request(notice);
-    return ResponseEntity
-      .noContent()
-      .build();
+    NoticeStatus status = this.extraction.request(notice);
+    
+    return ResponseEntity.ok(status);
   };
 };

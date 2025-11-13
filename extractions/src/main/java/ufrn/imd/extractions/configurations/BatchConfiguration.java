@@ -7,15 +7,19 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.launch.support.TaskExecutorJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import ufrn.imd.extractions.batch.NoticeExtractionProcessor;
@@ -29,13 +33,21 @@ public class BatchConfiguration extends DefaultBatchConfiguration {
   private ExtractionService extraction;
   private NoticesService notices;
 
-  
   public BatchConfiguration(
     ExtractionService extraction,
     NoticesService notices
   ) {
     this.extraction = extraction;
     this.notices = notices;
+  };
+
+  @Bean
+  public JobLauncher launcher(JobRepository repository) throws Exception {
+    TaskExecutorJobLauncher laucher = new TaskExecutorJobLauncher();
+    laucher.setJobRepository(repository);
+    laucher.setTaskExecutor(new SimpleAsyncTaskExecutor());
+    laucher.afterPropertiesSet();
+    return laucher;
   };
 
   @Bean

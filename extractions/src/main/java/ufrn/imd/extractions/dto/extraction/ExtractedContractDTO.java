@@ -1,9 +1,4 @@
 package ufrn.imd.extractions.dto.extraction;
-
-import java.sql.Date;
-
-import ufrn.imd.extractions.models.Contract;
-
 public record ExtractedContractDTO(
   Double value,
   String currency,
@@ -12,16 +7,4 @@ public record ExtractedContractDTO(
   String location,
   ExtractedCompanyDTO hirer,
   ExtractedCompanyDTO hired
-) {
-  public Contract toEntity() {
-    Contract contract = new Contract();
-    contract.setValue(this.value());
-    contract.setCurrency(this.currency());
-    contract.setStartDate(Date.valueOf(this.startDate()));
-    contract.setEndDate(Date.valueOf(this.endDate()));
-    contract.setLocation(this.location());
-    contract.setHirer(this.hirer().toEntity());
-    contract.setHired(this.hired().toEntity());
-    return contract;
-  };
-};
+) {};

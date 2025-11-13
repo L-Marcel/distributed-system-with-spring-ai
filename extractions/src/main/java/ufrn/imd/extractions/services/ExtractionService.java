@@ -11,6 +11,9 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
+import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
+import org.springframework.ai.rag.preretrieval.query.transformation.RewriteQueryTransformer;
+import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -24,9 +27,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import ufrn.imd.extractions.Prompts;
-import ufrn.imd.extractions.dto.NoticeReferenceDTO;
 import ufrn.imd.extractions.dto.NoticeReferenceWithNotesDTO;
 import ufrn.imd.extractions.models.Notice;
+import ufrn.imd.extractions.repository.VectorStoreRepository;
 
 @Service
 public class ExtractionService {
@@ -38,6 +41,7 @@ public class ExtractionService {
   private ObjectWriter writer;
   private ChatClient client;
   private SyncMcpToolCallbackProvider tools;
+  private VectorStoreRepository vectors;
   private ChatMemoryRepository momories;
   private JobLauncher launcher;
   private Job extract;
@@ -48,6 +52,7 @@ public class ExtractionService {
     @Lazy Job extract,
     SyncMcpToolCallbackProvider tools,
     ChatMemoryRepository momories,
+    VectorStoreRepository vectors,
     ObjectMapper mapper,
     ChatClient client,
     Prompts prompts
@@ -111,8 +116,18 @@ public class ExtractionService {
       .chatMemoryRepository(this.momories)
       .maxMessages(12)
       .build();
-
+    
     List<Advisor> advisors = List.of(
+      RetrievalAugmentationAdvisor.builder()
+        .queryTransformers(
+          RewriteQueryTransformer.builder()
+            .chatClientBuilder(client.mutate())
+            .build()
+        ).documentRetriever(VectorStoreDocumentRetriever.builder()
+          .similarityThreshold(0.50)
+          .vectorStore(this.vectors.getStore())
+          .build())
+        .build(),
       MessageChatMemoryAdvisor
         .builder(memory)
         .conversationId(reference.id().toString())

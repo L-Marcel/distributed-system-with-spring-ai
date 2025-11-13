@@ -8,6 +8,7 @@ import org.springframework.ai.document.MetadataMode;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
 import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.OpenAiEmbeddingModel;
 import org.springframework.ai.openai.OpenAiEmbeddingOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
@@ -31,6 +32,12 @@ public class AiConfiguration {
 
   @Value("${spring.ai.openai.chat.options.model}")
   private String model;
+
+  @Value("${spring.ai.openai.temperature}")
+  private Double temperature;
+
+  @Value("${spring.ai.openai.reasoning}")
+  private String reasoning;
 
   @Bean
   public OpenAiApi openAiApi() {
@@ -65,9 +72,11 @@ public class AiConfiguration {
   @Bean
   @Primary
   public ChatClient chatClient(ChatClient.Builder builder) {
-    ChatOptions chatOptions = ChatOptions
+    OpenAiChatOptions chatOptions = OpenAiChatOptions
       .builder()
       .model(this.model)
+      .reasoningEffort(this.reasoning)
+      .temperature(this.temperature)
       .build();
     
     return builder

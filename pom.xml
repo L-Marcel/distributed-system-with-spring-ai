@@ -18,6 +18,7 @@
     <spring-ai.version>1.1.0-RC1</spring-ai.version>
     <lombok.version>1.18.42</lombok.version>
     <logbook.version>3.9.0</logbook.version>
+    <resilience4j.version>2.3.0</resilience4j.version>
 	</properties>
   <modules>
     <module>config-server</module>
@@ -57,6 +58,13 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+				<groupId>io.github.resilience4j</groupId>
+				<artifactId>resilience4j-bom</artifactId>
+				<version>${resilience4j.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
   <build>

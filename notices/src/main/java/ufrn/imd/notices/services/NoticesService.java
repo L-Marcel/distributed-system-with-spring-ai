@@ -123,7 +123,8 @@ public class NoticesService {
 
     notice.setFilename(filename);
     notice.setType(NoticeType.UNKNOWN);
-    // TODO - tirar isso depois
+    
+    // TODO - tirar isso depois (manter para a apresentação)
     notice.setBytes(bytes + System.currentTimeMillis());
     this.notices.saveAndFlush(notice);
 

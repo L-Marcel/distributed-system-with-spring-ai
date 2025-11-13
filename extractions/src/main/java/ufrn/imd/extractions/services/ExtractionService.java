@@ -1,6 +1,7 @@
 package ufrn.imd.extractions.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
 import org.springframework.ai.rag.preretrieval.query.transformation.RewriteQueryTransformer;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -118,7 +120,6 @@ public class ExtractionService {
       .maxMessages(12)
       .build();
     
-    // TODO - Pergar os dados do documento especifico
     List<Advisor> advisors = List.of(
       RetrievalAugmentationAdvisor.builder()
         .queryTransformers(
@@ -127,6 +128,10 @@ public class ExtractionService {
             .build()
         ).documentRetriever(VectorStoreDocumentRetriever.builder()
           .similarityThreshold(0.50)
+          .filterExpression(this.vectors.expressionByNoticeIdAndVersion(
+            reference.id(),
+            reference.version()
+          ))
           .vectorStore(this.vectors.getStore())
           .build())
         .build(),

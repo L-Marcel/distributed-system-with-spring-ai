@@ -169,7 +169,7 @@ public class Tools {
         return _note;
       }).toList());
 
-      this.notices.save(_notice);
+      this.notices.saveAndFlush(_notice);
 
       return this.writer.writeValueAsString(notice);
     } catch (Exception e) {
@@ -178,14 +178,13 @@ public class Tools {
   };
 
   // TODO - Salvar as empresas
-  // TODO - Voltar para o transacional
   @Tool(
     name = "save_contract", 
     description = """
       Atualiza o contrato de um edital com base nos dados extraídos.
       Retorna uma mensagem de erro ou os dados do contrato e edital atualizados.
     """
-  ) //@Transactional 
+  ) @Transactional 
   public String saveContract(
     @ToolParam(
       required = true,
@@ -222,7 +221,7 @@ public class Tools {
       ));
 
       notice.setContract(_contract);
-      this.notices.save(notice);
+      this.notices.saveAndFlush(notice);
       
       return this.writer.writeValueAsString(contract);
     } catch (Exception e) {

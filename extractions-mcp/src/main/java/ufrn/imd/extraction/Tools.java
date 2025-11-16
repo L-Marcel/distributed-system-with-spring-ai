@@ -22,7 +22,7 @@ import ufrn.imd.commons.dto.extraction.ExtractedRepresentativeDTO;
 import ufrn.imd.commons.dto.extraction.ExtractedVacanciesDTO;
 import ufrn.imd.commons.models.Company;
 import ufrn.imd.commons.models.Notice;
-import ufrn.imd.commons.repository.VectorStoreRepository;
+import ufrn.imd.commons.repositories.VectorStoreRepository;
 import ufrn.imd.extraction.services.ExtractionsService;
 
 @Component

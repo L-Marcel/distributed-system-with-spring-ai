@@ -49,7 +49,8 @@ public class Address {
   @OneToOne(optional = false, mappedBy = "address")
   private Company company;
 
-  public void update(ExtractedAddressDTO address) {
+  public void update(ExtractedAddressDTO address, Company company) {
+    this.setCompany(company);
     this.setStreet(address.street());
     this.setNumber(address.number());
     this.setDistrict(address.district());

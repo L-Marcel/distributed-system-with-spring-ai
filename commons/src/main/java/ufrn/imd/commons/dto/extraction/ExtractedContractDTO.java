@@ -32,7 +32,7 @@ public record ExtractedContractDTO(
 
   @ToolParam(
     required = false,
-    description = "Local repassado no contrato."
+    description = "Local repassado no contrato. Máximo de 200 caracteres."
   ) String location,
   
   @ToolParam(

@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import ufrn.imd.extractions.Prompts;
 import ufrn.imd.commons.models.Notice;
 import ufrn.imd.commons.models.enums.NoticeStatus;
-import ufrn.imd.commons.repository.VectorStoreRepository;
+import ufrn.imd.commons.repositories.VectorStoreRepository;
 
 @Service
 public class ExtractionService {

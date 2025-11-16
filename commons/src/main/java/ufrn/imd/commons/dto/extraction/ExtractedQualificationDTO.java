@@ -13,6 +13,6 @@ public record ExtractedQualificationDTO(
 
   @ToolParam(
     required = false,
-    description = "Descrição da vaga."
+    description = "Descrição da vaga. Máximo de 200 caracteres."
   ) String description
 ) {};

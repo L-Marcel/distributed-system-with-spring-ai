@@ -5,12 +5,12 @@ import org.springframework.ai.tool.annotation.ToolParam;
 public record ExtractedResponsibleDTO(
   @ToolParam(
     required = false,
-    description = "Nome do responsável."
+    description = "Nome do responsável. Máximo de 200 caracteres."
   ) String name,
 
   @ToolParam(
     required = false,
-    description = "Email do responsável."
+    description = "Email do responsável. Máximo de 200 caracteres."
   ) String email,
 
   @ToolParam(

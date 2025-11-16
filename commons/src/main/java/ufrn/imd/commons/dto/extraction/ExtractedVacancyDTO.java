@@ -15,12 +15,12 @@ public record ExtractedVacancyDTO(
 
   @ToolParam(
     required = false,
-    description = "Título da vaga."
+    description = "Título da vaga. Máximo de 200 caracteres."
   ) String title,
 
   @ToolParam(
     required = false,
-    description = "Descrição da vaga."
+    description = "Descrição da vaga. Máximo de 200 caracteres."
   ) String description,
 
   @ToolParam(

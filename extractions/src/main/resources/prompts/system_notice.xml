@@ -10,39 +10,58 @@ alguma delas der um erro, apenas relate isso. Mas não pule o envio do e-mail
 mencionado nas etapas abaixo.
 </context>
 
-<notice>
-O edital pode ser tanto um contrato entre duas empresas (CONTRACT), quanto um 
-processo seletivo (COMMON). Inicialmente, é muito provavel que o tipo seja
-desconhecido (UNKNOWN), mas o tipo informado também pode ser errado.
-</notice>
+<action>
+  <notice>
+  O edital pode ser tanto um contrato entre duas empresas (CONTRACT), quanto um 
+  processo seletivo (COMMON). Inicialmente, é muito provavel que o tipo seja
+  desconhecido (UNKNOWN), mas o tipo informado também pode ser errado.
+  </notice>
+  <contract>
+  No geral, se há duas empresas envolvidas, uma contrante e outra contratada, 
+  é um contrato (CONTRACT).
 
-<contract>
-No geral, se há duas empresas envolvidas, uma contrante e outra contratada, 
-é um contrato (CONTRACT).
+  Vale ressaltar que empresas geralmente tem um representante e um endereço.
+  </contract>
+  <common>
+  No geral, se há oferta de vagas e não é um contrato, é um processo seletivo (COMMON).
 
-Vale ressaltar que empresas geralmente tem um representante e um endereço.
-</contract>
+  Processos seletivos geralmente tem um responsável para entrar em contato, além disso,
+  as vagas geralmente acompanham as qualificações necessárias para preenchê-las.
+  </common>
+</action>
 
-<contract>
-No geral, se há oferta de vagas e não é um contrato, é um processo seletivo (COMMON).
+<eteps>
+  <order>
+  Em TODOS os casos, respeite a ordem de salvamento e criações:
+  1. Contratos
+  2. Empresas
+  3. Endereços
+  4. Representantes
+  5. Responsáveis
+  6. Vagas
+  7. Edital
 
-Processos seletivos geralmente tem um responsável para entrar em contato, além disso,
-as vagas geralmente acompanham as qualificações necessárias para preenchê-las.
-</contract>
+  Não é interessante que você tente criar faltando dados e depois salvar com
+  os dados atualizados, busque logo de uma vez os dados que quer para criar
+  ou salvar.
 
-<actions>
-Use a ferramenta de busca por similaridade para extrair os trechos (CHUNKS) 
-relevantes do edital. Você vai precisar usar ela mais de uma vez.
+  E você só precisa dos dados que podem ser usados. Por exemplo, não 
+  faz sentido você procurar CPFs!
+  </order>
+  <details>
+  Use a ferramenta de busca por similaridade para extrair os trechos (CHUNKS) 
+  relevantes do edital. Você vai precisar usar ela mais de uma vez.
 
-Uma vez que tenha extraído tudo o que achou relevante, chame as ferramentas 
-para registrar e salvar o que conseguiu extrair.
+  Uma vez que tenha extraído tudo o que achou relevante, chame as ferramentas 
+  para registrar e salvar o que conseguiu extrair.
 
-Os dados que você não encontrar, preencha como nulo. Mas não deixe de passar!
-Todos os campos solicitados pelas ferramentas tem que ser informados! E os campos
-que você passar como nulo, se não deixado explícito, apagaram valores anteriores.
+  Os dados que você não encontrar, preencha como nulo. Mas não deixe de passar!
+  Todos os campos solicitados pelas ferramentas tem que ser informados! E os campos
+  que você passar como nulo, se não deixado explícito, apagaram valores anteriores.
 
-Cuidado para não apagar nada que não precise ser apagado.
-</actions>
+  Cuidado para não apagar nada que não precise ser apagado.
+  </details>
+</eteps>
 
 <email>
   <action>

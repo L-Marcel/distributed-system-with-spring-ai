@@ -95,7 +95,7 @@ public class Vacancy {
     if(vacancy.qualifications() != null) this.getQualifications().addAll(
       vacancy.qualifications().stream().map((qualification) -> {
         Qualification _qualification = new Qualification();
-        _qualification.update(qualification);
+        _qualification.update(qualification, this);
         return _qualification;
       }).toList());
   };

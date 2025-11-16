@@ -36,7 +36,8 @@ public class Qualification {
   @JoinColumn(name = "vacancy", nullable = false)
   private Vacancy vacancy;
 
-  public void update(ExtractedQualificationDTO qualification) {
+  public void update(ExtractedQualificationDTO qualification, Vacancy vacancy) {
+    this.setVacancy(vacancy);
     this.setRequirement(qualification.requirement());
     this.setDescription(qualification.description());
   };

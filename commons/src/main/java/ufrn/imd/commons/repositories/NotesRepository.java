@@ -1,4 +1,4 @@
-package ufrn.imd.commons.repository;
+package ufrn.imd.commons.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

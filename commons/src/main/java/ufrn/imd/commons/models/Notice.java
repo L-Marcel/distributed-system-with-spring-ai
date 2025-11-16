@@ -66,6 +66,7 @@ public class Notice {
   
   @JsonManagedReference
   @OneToOne(optional = true, cascade = CascadeType.ALL, mappedBy = "notice", orphanRemoval = true)
+  @JoinColumn(name = "contract", nullable = true)
   private Contract contract;
 
   @JsonManagedReference
@@ -73,7 +74,7 @@ public class Notice {
   private Set<Vacancy> vancacies;
 
   @JsonManagedReference
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumn(name = "responsible", nullable = true)
   private Person responsible;
 
@@ -92,6 +93,7 @@ public class Notice {
       notice.notes().stream().map((note) -> {
         Note _note = new Note();
         _note.setContent(note.content());
+        _note.setNotice(this);
         return _note;
       }).toList());
   };

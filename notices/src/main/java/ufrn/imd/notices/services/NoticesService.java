@@ -18,8 +18,8 @@ import ufrn.imd.commons.errors.NoticeNotFound;
 import ufrn.imd.commons.models.Notice;
 import ufrn.imd.commons.models.enums.NoticeStatus;
 import ufrn.imd.commons.models.enums.NoticeType;
-import ufrn.imd.commons.repository.NoticesRepository;
-import ufrn.imd.commons.repository.VectorStoreRepository;
+import ufrn.imd.commons.repositories.NoticesRepository;
+import ufrn.imd.commons.repositories.VectorStoreRepository;
 
 @Service
 public class NoticesService {

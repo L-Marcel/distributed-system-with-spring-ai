@@ -4,6 +4,6 @@ JOIN notice AS n
 ON n.id = CAST((v.metadata ->> 'notice') AS UUID);
 
 SELECT * FROM note;
-
+SELECT * FROM notice;
 SELECT * FROM spring_ai_chat_memory;
 -- DELETE FROM spring_ai_chat_memory WHERE true;

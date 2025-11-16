@@ -4,18 +4,18 @@ import org.springframework.ai.tool.annotation.ToolParam;
 
 public record ExtractedCompanyDTO(
   @ToolParam(
-    required = false,
+    required = true,
     description = "CNPJ da empresa."
   ) String cnpj,
 
   @ToolParam(
     required = false,
-    description = "Nome legal da empresa."
+    description = "Nome legal da empresa. Máximo de 200 caracteres."
   ) String legalName,
 
   @ToolParam(
     required = false,
-    description = "Nome comercial da empresa."
+    description = "Nome comercial da empresa. Máximo de 200 caracteres."
   ) String tradeName,
 
   @ToolParam(
@@ -25,6 +25,6 @@ public record ExtractedCompanyDTO(
   
   @ToolParam(
     required = false,
-    description = "Email da empresa."
+    description = "Email da empresa. Máximo de 200 caracteres."
   ) String email
 ) {};

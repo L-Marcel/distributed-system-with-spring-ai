@@ -49,7 +49,7 @@ public class Company {
   private Set<Contract> contractsAsHired;
 
   @JsonManagedReference
-  @ManyToOne(optional = true)
+  @ManyToOne(optional = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumn(name = "representative", nullable = true)
   private Person representative;
 

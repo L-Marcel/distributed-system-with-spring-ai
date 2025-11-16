@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ufrn.imd.commons.errors.NoticeNotFound;
 import ufrn.imd.commons.models.Notice;
-import ufrn.imd.commons.repository.NoticesRepository;
+import ufrn.imd.commons.repositories.NoticesRepository;
 
 @Service
 public class NoticesService {

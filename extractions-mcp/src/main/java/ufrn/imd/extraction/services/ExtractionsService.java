@@ -12,14 +12,15 @@ import ufrn.imd.commons.dto.extraction.ExtractedContractDTO;
 import ufrn.imd.commons.dto.extraction.ExtractedNoticeDTO;
 import ufrn.imd.commons.dto.extraction.ExtractedRepresentativeDTO;
 import ufrn.imd.commons.dto.extraction.ExtractedVacanciesDTO;
+import ufrn.imd.commons.errors.CompanyNotFound;
 import ufrn.imd.commons.errors.NoticeNotFound;
 import ufrn.imd.commons.models.Address;
 import ufrn.imd.commons.models.Company;
 import ufrn.imd.commons.models.Contract;
 import ufrn.imd.commons.models.Notice;
 import ufrn.imd.commons.models.Person;
-import ufrn.imd.commons.repository.CompaniesRepository;
-import ufrn.imd.commons.repository.NoticesRepository;
+import ufrn.imd.commons.repositories.CompaniesRepository;
+import ufrn.imd.commons.repositories.NoticesRepository;
 
 @Service
 public class ExtractionsService {
@@ -42,7 +43,7 @@ public class ExtractionsService {
 
   public Company findCompanyByCNPJ(String cnpj) {
     return this.companies.findById(cnpj)
-      .orElseThrow(NoticeNotFound::new);
+      .orElseThrow(CompanyNotFound::new);
   };
 
   @Transactional 
@@ -78,7 +79,7 @@ public class ExtractionsService {
 
     Contract contract = notice.getContract();
     if(contract == null) contract = new Contract();
-    contract.update(data);
+    contract.update(data, notice);
 
     notice.setContract(contract);
     this.notices.saveAndFlush(notice);
@@ -110,7 +111,7 @@ public class ExtractionsService {
     
     Address address = company.getAddress();
     if(address == null) address = new Address();
-    address.update(data);
+    address.update(data, company);
 
     company.setAddress(address);
     this.companies.saveAndFlush(company);

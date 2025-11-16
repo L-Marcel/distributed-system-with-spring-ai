@@ -4,13 +4,13 @@ import org.springframework.ai.tool.annotation.ToolParam;
 
 public record ExtractedAddressDTO(
   @ToolParam(
-    required = false,
+    required = true,
     description = "CNPJ da empresa."
   ) String cnpj,
 
   @ToolParam(
     required = false,
-    description = "Rua da empresa."
+    description = "Rua da empresa. Máximo de 200 caracteres."
   ) String street,
 
   @ToolParam(
@@ -20,17 +20,17 @@ public record ExtractedAddressDTO(
 
   @ToolParam(
     required = false,
-    description = "Bairro da empresa."
+    description = "Bairro da empresa. Máximo de 200 caracteres."
   ) String district,
 
   @ToolParam(
     required = false,
-    description = "Complemento do endereço da empresa."
+    description = "Complemento do endereço da empresa. Máximo de 200 caracteres."
   ) String complement,
 
   @ToolParam(
     required = false,
-    description = "Cidade da empresa."
+    description = "Cidade da empresa. Máximo de 200 caracteres."
   ) String city,
 
   @ToolParam(

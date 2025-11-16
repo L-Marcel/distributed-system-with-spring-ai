@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,20 +49,20 @@ public class Contract {
 
   @JsonBackReference
   @OneToOne(optional = false)
-  @JoinColumn(name = "notice", nullable = false)
   private Notice notice;
   
   @JsonManagedReference
-  @ManyToOne(optional = true)
+  @ManyToOne(optional = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumn(name = "hired", nullable = true)
   private Company hired;
 
   @JsonManagedReference
-  @ManyToOne(optional = true)
+  @ManyToOne(optional = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumn(name = "hirer", nullable = true)
   private Company hirer;
 
-  public void update(ExtractedContractDTO contract) {
+  public void update(ExtractedContractDTO contract, Notice notice) {
+    this.setNotice(notice);
     this.setValue(contract.value());
     this.setCurrency(contract.currency());
     this.setLocation(contract.location());

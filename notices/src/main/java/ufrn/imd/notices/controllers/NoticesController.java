@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import ufrn.imd.notices.dto.NoticeDTO;
-import ufrn.imd.notices.models.Notice;
+import ufrn.imd.commons.dto.NoticeDTO;
+import ufrn.imd.commons.models.Notice;
 import ufrn.imd.notices.services.NoticesService;
 
 @RestController
@@ -49,7 +49,8 @@ public class NoticesController {
       notice.getId(),
       notice.getVersion(),
       notice.getType(),
-      notice.getStatus()
+      notice.getStatus(),
+      notice.getNotes()
     );
 
     return ResponseEntity
@@ -76,7 +77,8 @@ public class NoticesController {
       notice.getId(),
       notice.getVersion(),
       notice.getType(),
-      notice.getStatus()
+      notice.getStatus(),
+      notice.getNotes()
     );
 
     return ResponseEntity

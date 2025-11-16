@@ -14,12 +14,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ufrn.imd.notices.errors.NoitceNotFound;
-import ufrn.imd.notices.models.Notice;
-import ufrn.imd.notices.models.enums.NoticeStatus;
-import ufrn.imd.notices.models.enums.NoticeType;
-import ufrn.imd.notices.repository.NoticesRepository;
-import ufrn.imd.notices.repository.VectorStoreRepository;
+import ufrn.imd.commons.errors.NoticeNotFound;
+import ufrn.imd.commons.models.Notice;
+import ufrn.imd.commons.models.enums.NoticeStatus;
+import ufrn.imd.commons.models.enums.NoticeType;
+import ufrn.imd.commons.repository.NoticesRepository;
+import ufrn.imd.commons.repository.VectorStoreRepository;
 
 @Service
 public class NoticesService {
@@ -208,6 +208,6 @@ public class NoticesService {
 
   public Notice findById(UUID id) {
     return this.notices.findById(id)
-      .orElseThrow(NoitceNotFound::new);
+      .orElseThrow(NoticeNotFound::new);
   };
 };

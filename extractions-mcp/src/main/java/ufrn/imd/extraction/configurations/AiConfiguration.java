@@ -3,7 +3,6 @@ package ufrn.imd.extraction.configurations;
 import java.net.http.HttpClient;
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.document.MetadataMode;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
@@ -83,7 +82,7 @@ public class AiConfiguration {
       .defaultOptions(chatOptions)
       .build();
   };
-
+  
   @Bean
   @Primary
   public DefaultToolCallingManager defaultToolCallingManager() {

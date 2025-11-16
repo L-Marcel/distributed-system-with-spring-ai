@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ufrn.imd.extractions.models.Notice;
-import ufrn.imd.extractions.models.enums.NoticeStatus;
+import ufrn.imd.commons.models.Notice;
+import ufrn.imd.commons.models.enums.NoticeStatus;
 import ufrn.imd.extractions.services.ExtractionService;
 import ufrn.imd.extractions.services.NoticesService;
 

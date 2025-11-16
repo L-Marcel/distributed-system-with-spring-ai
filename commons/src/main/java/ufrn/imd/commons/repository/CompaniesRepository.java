@@ -1,0 +1,9 @@
+package ufrn.imd.commons.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import ufrn.imd.commons.models.Company;
+
+@Repository
+public interface CompaniesRepository extends JpaRepository<Company, String> {};

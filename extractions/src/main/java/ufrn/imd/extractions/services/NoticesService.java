@@ -5,9 +5,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ufrn.imd.extractions.errors.NoitceNotFound;
-import ufrn.imd.extractions.models.Notice;
-import ufrn.imd.extractions.repository.NoticesRepository;
+import ufrn.imd.commons.errors.NoticeNotFound;
+import ufrn.imd.commons.models.Notice;
+import ufrn.imd.commons.repository.NoticesRepository;
 
 @Service
 public class NoticesService {
@@ -24,6 +24,6 @@ public class NoticesService {
     UUID id
   ) {
     return this.notices.findById(id)
-      .orElseThrow(NoitceNotFound::new);
+      .orElseThrow(NoticeNotFound::new);
   };
 };

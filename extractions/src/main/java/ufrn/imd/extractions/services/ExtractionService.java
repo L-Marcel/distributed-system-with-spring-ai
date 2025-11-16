@@ -27,10 +27,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import ufrn.imd.extractions.Prompts;
-import ufrn.imd.extractions.dto.NoticeDTO;
-import ufrn.imd.extractions.models.Notice;
-import ufrn.imd.extractions.models.enums.NoticeStatus;
-import ufrn.imd.extractions.repository.VectorStoreRepository;
+import ufrn.imd.commons.models.Notice;
+import ufrn.imd.commons.models.enums.NoticeStatus;
+import ufrn.imd.commons.repository.VectorStoreRepository;
 
 @Service
 public class ExtractionService {
@@ -96,16 +95,8 @@ public class ExtractionService {
   };
 
   public void extract(Notice notice) throws JsonProcessingException {
-    NoticeDTO reference = new NoticeDTO(
-      notice.getId(),
-      notice.getVersion(),
-      notice.getType(),
-      notice.getStatus(),
-      notice.getNotes()
-    );
-
     String referenceJson = this.writer.writeValueAsString(
-      reference
+      notice
     );
 
     log.debug(
@@ -130,16 +121,15 @@ public class ExtractionService {
             .build()
         ).documentRetriever(VectorStoreDocumentRetriever.builder()
           .similarityThreshold(0.50)
-          .filterExpression(this.vectors.expressionByNoticeIdAndVersion(
-            reference.id(),
-            reference.version()
+          .filterExpression(this.vectors.expressionByNoticeId(
+            notice.getId()
           ))
           .vectorStore(this.vectors.getStore())
           .build())
         .build(),
       MessageChatMemoryAdvisor
         .builder(memory)
-        .conversationId(reference.id().toString())
+        .conversationId(notice.getId().toString())
         .build()
     );
 

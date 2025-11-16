@@ -1,1 +1,1 @@
-- Configurar fallbacks do resilience4j
+- Checar chat memory

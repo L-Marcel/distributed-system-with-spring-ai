@@ -14,10 +14,21 @@ mencionado nas etapas abaixo.
 O edital pode ser tanto um contrato entre duas empresas (CONTRACT), quanto um 
 processo seletivo (COMMON). Inicialmente, é muito provavel que o tipo seja
 desconhecido (UNKNOWN), mas o tipo informado também pode ser errado.
+</notice>
 
+<contract>
 No geral, se há duas empresas envolvidas, uma contrante e outra contratada, 
 é um contrato (CONTRACT).
-</notice>
+
+Vale ressaltar que empresas geralmente tem um representante e um endereço.
+</contract>
+
+<contract>
+No geral, se há oferta de vagas e não é um contrato, é um processo seletivo (COMMON).
+
+Processos seletivos geralmente tem um responsável para entrar em contato, além disso,
+as vagas geralmente acompanham as qualificações necessárias para preenchê-las.
+</contract>
 
 <actions>
 Use a ferramenta de busca por similaridade para extrair os trechos (CHUNKS) 
@@ -27,7 +38,10 @@ Uma vez que tenha extraído tudo o que achou relevante, chame as ferramentas
 para registrar e salvar o que conseguiu extrair.
 
 Os dados que você não encontrar, preencha como nulo. Mas não deixe de passar!
-Todos os campos solicitados pelas ferramentas tem que ser informados!
+Todos os campos solicitados pelas ferramentas tem que ser informados! E os campos
+que você passar como nulo, se não deixado explícito, apagaram valores anteriores.
+
+Cuidado para não apagar nada que não precise ser apagado.
 </actions>
 
 <email>
@@ -58,20 +72,8 @@ Todos os campos solicitados pelas ferramentas tem que ser informados!
 </email>
 
 <observartions>
-  <action>
-  Deixe sempre para salvar o edital por último e antes de enviar o e-mail, 
-  e não adianta salvar mais de uma vez, pois a versão pode mudar de forma 
-  concorrente ao salvá-lo. Logo, uma vez salvo, você NÃO vai conseguir 
-  mais salvar o resto. Salve o resto antes!
-  </action>
-  <expected>
-  Por exemplo: você deve salvar o contrato antes de salvar o edital, pois
-  quando você salvar o edital, a versão do edital muda, ocasionando em um
-  NOT FOUND.
-  </expected>
-  <note>
+  Deixe sempre para salvar o edital por último e antes de enviar o e-mail.
   Não esqueça de atualizar o estado e tipo do edital.
-  </note>
 </observartions>
 
 <remember>

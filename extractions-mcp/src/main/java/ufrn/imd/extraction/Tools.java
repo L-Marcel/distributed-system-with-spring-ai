@@ -1,8 +1,5 @@
 package ufrn.imd.extraction;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,15 +15,15 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import jakarta.transaction.Transactional;
-import ufrn.imd.extraction.dto.extraction.ExtractedContractDTO;
-import ufrn.imd.extraction.dto.extraction.ExtractedNoticeDTO;
-import ufrn.imd.extraction.errors.NoticeNotFound;
-import ufrn.imd.extraction.models.Contract;
-import ufrn.imd.extraction.models.Note;
-import ufrn.imd.extraction.models.Notice;
-import ufrn.imd.extraction.repository.VectorStoreRepository;
-import ufrn.imd.extraction.repository.NoticesRepository;
+import ufrn.imd.commons.dto.extraction.ExtractedAddressDTO;
+import ufrn.imd.commons.dto.extraction.ExtractedContractDTO;
+import ufrn.imd.commons.dto.extraction.ExtractedNoticeDTO;
+import ufrn.imd.commons.dto.extraction.ExtractedRepresentativeDTO;
+import ufrn.imd.commons.dto.extraction.ExtractedVacanciesDTO;
+import ufrn.imd.commons.models.Company;
+import ufrn.imd.commons.models.Notice;
+import ufrn.imd.commons.repository.VectorStoreRepository;
+import ufrn.imd.extraction.services.ExtractionsService;
 
 @Component
 public class Tools {
@@ -36,18 +33,17 @@ public class Tools {
 
   private ObjectWriter writer;
   private VectorStoreRepository vectors;
-  private NoticesRepository notices;
-
+  private ExtractionsService extractions;
   
   @Autowired
   public Tools(
     ObjectMapper mapper,
     VectorStoreRepository vectors,
-    NoticesRepository notices
+    ExtractionsService extractions
   ) {
     this.writer = mapper.writerWithDefaultPrettyPrinter();
     this.vectors = vectors;
-    this.notices = notices;
+    this.extractions = extractions;
   };
 
   private String documentsToString(
@@ -77,8 +73,7 @@ public class Tools {
   @Tool(
     name = "search_in_notice", 
     description = "Procura por trechos (chunks) relevantes de um edital."
-  )
-  public String searchInNotice(
+  ) public String searchInNotice(
     @ToolParam(
       required = true, 
       description = "O texto de busca usado na pesquisa por similaridade."
@@ -87,12 +82,7 @@ public class Tools {
     @ToolParam(
       required = true,
       description = "O UUID da notícia."
-    ) String id,
-
-    @ToolParam(
-      required = true, 
-      description = "A versão da notícia."
-    ) Integer version
+    ) String id
   ) {
     log.debug(
       """
@@ -100,17 +90,14 @@ public class Tools {
 
       Query: '{}'
       Id: '{}'
-      Version: '{}'
       """,
       query,
-      id,
-      version
+      id
     );
     
     SearchRequest request = SearchRequest.from(
-      this.vectors.searchByNoticeIdAndVersion(
-        UUID.fromString(id),
-        version
+      this.vectors.searchByNoticeId(
+        UUID.fromString(id)
       )
     ).query(query)
     .topK(3)
@@ -139,8 +126,7 @@ public class Tools {
       Atualiza um edital com base nos dados extraídos.
       Retorna uma mensagem de erro ou os dados do edital atualizado.
     """
-  ) @Transactional 
-  public String saveNotice(
+  ) public String saveNotice(
     @ToolParam(
       required = true,
       description = "Dados extraídos do edital"
@@ -156,36 +142,20 @@ public class Tools {
         this.writer.writeValueAsString(notice)
       );
 
-      Notice _notice = this.notices.findById(
-        notice.id()
-      ).orElseThrow(NoticeNotFound::new);
-
-      _notice.setStatus(notice.status());
-      _notice.setType(notice.type());
-
-      if(notice.notes() != null) _notice.getNotes().addAll(notice.notes().stream().map((note) -> {
-        Note _note = new Note();
-        _note.setContent(note.content());
-        return _note;
-      }).toList());
-
-      this.notices.saveAndFlush(_notice);
-
-      return this.writer.writeValueAsString(notice);
+      Notice _notice = this.extractions.updateFrom(notice);
+      return this.writer.writeValueAsString(_notice);
     } catch (Exception e) {
       return "Falha ao atualizar o edital: " + e.getMessage();
     }
   };
 
-  // TODO - Salvar as empresas
   @Tool(
     name = "save_contract", 
     description = """
-      Atualiza o contrato de um edital com base nos dados extraídos.
+      Atualiza ou cria o contrato de um edital com base nos dados extraídos.
       Retorna uma mensagem de erro ou os dados do contrato e edital atualizados.
     """
-  ) //@Transactional 
-  public String saveContract(
+  ) public String saveContract(
     @ToolParam(
       required = true,
       description = "Dados extraídos do contrato de um edital"
@@ -201,28 +171,94 @@ public class Tools {
         this.writer.writeValueAsString(contract)
       );
 
-      Notice notice = this.notices.findById(
-        contract.notice()
-      ).orElseThrow(NoticeNotFound::new);
+      Notice notice = this.extractions.updateFrom(contract);
+      return this.writer.writeValueAsString(notice);
+    } catch (Exception e) {
+      return "Falha ao atualizar o contrato: " + e.getMessage();
+    }
+  };
 
-      Contract _contract = notice.getContract();
-      if(_contract == null) _contract = new Contract();
-      if(contract.value() != null) _contract.setValue(contract.value());
-      if(contract.currency() != null) _contract.setCurrency(contract.currency());
-      if(contract.location() != null) _contract.setLocation(contract.location());
+  @Tool(
+    name = "save_representative", 
+    description = """
+      Atualiza ou cria o representante de uma empresa com base nos dados extraídos.
+      Retorna uma mensagem de erro ou os dados da empresa e representante atualizados.
+    """
+  ) public String saveRepresentative(
+    @ToolParam(
+      required = true,
+      description = "Dados extraídos do representante de uma empresa"
+    ) ExtractedRepresentativeDTO representative
+  ) {
+    try {
+      log.debug(
+        """
+        Tool 'save_representative' received:
+        
+        {}
+        """,
+        this.writer.writeValueAsString(representative)
+      );
 
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-      if(contract.startDate() != null) _contract.setStartDate(Date.valueOf(
-        LocalDate.parse(contract.startDate(), formatter)
-      ));
+      Company company = this.extractions.updateFrom(representative);
+      return this.writer.writeValueAsString(company);
+    } catch (Exception e) {
+      return "Falha ao atualizar o contrato: " + e.getMessage();
+    }
+  };
 
-      if(contract.endDate() != null) _contract.setEndDate(Date.valueOf(
-        LocalDate.parse(contract.endDate(), formatter)
-      ));
+  @Tool(
+    name = "save_address", 
+    description = """
+      Atualiza ou cria endereço de uma empresa com base nos dados extraídos.
+      Retorna uma mensagem de erro ou os dados da empresa e endereço atualizados.
+    """
+  ) public String saveAddress(
+    @ToolParam(
+      required = true,
+      description = "Dados extraídos do endereço de uma empresa"
+    ) ExtractedAddressDTO address
+  ) {
+    try {
+      log.debug(
+        """
+        Tool 'save_address' received:
+        
+        {}
+        """,
+        this.writer.writeValueAsString(address)
+      );
 
-      notice.setContract(_contract);
-      this.notices.saveAndFlush(notice);
-      
+      Company company = this.extractions.updateFrom(address);
+      return this.writer.writeValueAsString(company);
+    } catch (Exception e) {
+      return "Falha ao atualizar o contrato: " + e.getMessage();
+    }
+  };
+
+  @Tool(
+    name = "save_vacancies", 
+    description = """
+      Atualiza ou cria vagas de um edital com base nos dados extraídos.
+      Retorna uma mensagem de erro ou os dados das vagas e edital atualizados.
+    """
+  ) public String saveVacancies(
+    @ToolParam(
+      required = true,
+      description = "Dados extraídos das vagas de um edital"
+    ) ExtractedVacanciesDTO vacancies
+  ) {
+    try {
+      log.debug(
+        """
+        Tool 'save_vacancies' received:
+        
+        {}
+        """,
+        this.writer.writeValueAsString(vacancies)
+      );
+
+      Notice notice = this.extractions.updateFrom(vacancies);
       return this.writer.writeValueAsString(notice);
     } catch (Exception e) {
       return "Falha ao atualizar o contrato: " + e.getMessage();

@@ -24,7 +24,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import ufrn.imd.extractions.batch.NoticeExtractionProcessor;
 import ufrn.imd.extractions.batch.NoticeItemReader;
-import ufrn.imd.extractions.models.Notice;
+import ufrn.imd.commons.models.Notice;
 import ufrn.imd.extractions.services.ExtractionService;
 import ufrn.imd.extractions.services.NoticesService;
 

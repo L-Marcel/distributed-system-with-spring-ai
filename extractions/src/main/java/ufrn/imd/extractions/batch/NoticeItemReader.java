@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.batch.item.ItemReader;
 
-import ufrn.imd.extractions.models.Notice;
+import ufrn.imd.commons.models.Notice;
 import ufrn.imd.extractions.services.NoticesService;
 
 public class NoticeItemReader implements ItemReader<Notice> {

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import ufrn.imd.notices.models.enums.NoticeStatus;
+import ufrn.imd.commons.models.enums.NoticeStatus;
 
 @FeignClient("extractions")
 public interface ExtractionsService {

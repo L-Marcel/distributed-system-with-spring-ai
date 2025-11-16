@@ -18,8 +18,9 @@ mencionado nas etapas abaixo.
   </notice>
   <contract>
   No geral, se há duas empresas envolvidas, uma contrante e outra contratada, 
-  é um contrato (CONTRACT).
-
+  é um contrato (CONTRACT). Pode ser que haja oferta de vagas, se for o caso
+  talvez o contrato não tenha um valor explícito (por estar implícito nas vagas).
+  
   Vale ressaltar que empresas geralmente tem um representante e um endereço.
   </contract>
   <common>
@@ -33,17 +34,19 @@ mencionado nas etapas abaixo.
 <eteps>
   <order>
   Em TODOS os casos, respeite a ordem de salvamento e criações:
-  1. Contratos
-  2. Empresas
-  3. Endereços
-  4. Representantes
-  5. Responsáveis
-  6. Vagas
+
+  1. Contrato e empresas (note que são salvos e atualizados juntos)
+    1.1. Se alguma empresa faltar, passe ela intera como nulo.
+  2. Endereços (requer ter salvo o contrato)
+  2. Representantes (requer ter salvo a empresa)
+  5. Responsáveis (no caso de um processo seletivo)
+  6. Vagas e qualificações (note que são salvas e atualizadas juntas)
   7. Edital
 
   Não é interessante que você tente criar faltando dados e depois salvar com
   os dados atualizados, busque logo de uma vez os dados que quer para criar
-  ou salvar.
+  ou salvar. Se não tiver os dados suficientes para salvar ou criar, você pode
+  pular a etapa. Mas não vai ser o caso do edital (etapa 7).
 
   E você só precisa dos dados que podem ser usados. Por exemplo, não 
   faz sentido você procurar CPFs!

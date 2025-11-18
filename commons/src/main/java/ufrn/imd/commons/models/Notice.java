@@ -87,36 +87,32 @@ public class Notice {
       if(_responsible == null) _responsible = new Person();
       _responsible.update(notice.responsible());
       this.setResponsible(_responsible);
-    } else this.setResponsible(null);;
+    } else this.setResponsible(null);
 
-    if(notice.notes() != null) this.getNotes().addAll(
-      notice.notes().stream().map((note) -> {
+    if(notice.notes() != null) {
+      Set<Note> notes = notice.notes().stream().map((note) -> {
         Note _note = new Note();
         _note.setContent(note.content());
         _note.setNotice(this);
         return _note;
-      }).toList());
+      }).collect(Collectors.toSet());
+
+      if(this.getNotes() != null) this.getNotes().addAll(notes);
+      else this.setNotes(notes);
+    };
   };
 
   public void update(ExtractedVacanciesDTO vacancies) {
     if(vacancies.vacancies() != null) {
-      if(vacancies.append()) {
-        this.getVancacies().addAll(
-          vacancies.vacancies().stream().map((vacancy) -> {
-            Vacancy _vacancy = new Vacancy();
-            _vacancy.update(vacancy);
-            return _vacancy; 
-          }).toList()
-        );
-      } else {
-        this.setVancacies(
-          vacancies.vacancies().stream().map((vacancy) -> {
-            Vacancy _vacancy = new Vacancy();
-            _vacancy.update(vacancy);
-            return _vacancy; 
-          }).collect(Collectors.toSet())
-        );
-      };
-    } else this.setVancacies(null);
+      Set<Vacancy> _vacancies = vacancies.vacancies().stream().map((vacancy) -> {
+        Vacancy _vacancy = new Vacancy();
+        _vacancy.update(vacancy);
+        return _vacancy; 
+      }).collect(Collectors.toSet());
+      
+      if(vacancies.append() && this.getVancacies() != null) {
+        this.getVancacies().addAll(_vacancies);
+      } else this.setVancacies(_vacancies);
+    } else if(!vacancies.append()) this.setVancacies(null);
   };
 };

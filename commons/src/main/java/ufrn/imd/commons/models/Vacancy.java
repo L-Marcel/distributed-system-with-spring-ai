@@ -3,7 +3,9 @@ package ufrn.imd.commons.models;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -92,11 +94,16 @@ public class Vacancy {
     ));
     else this.setEndDate(null);
 
-    if(vacancy.qualifications() != null) this.getQualifications().addAll(
-      vacancy.qualifications().stream().map((qualification) -> {
+    if(vacancy.qualifications() != null) {
+      Set<Qualification> qualifications = vacancy.qualifications().stream().map((qualification) -> {
         Qualification _qualification = new Qualification();
         _qualification.update(qualification, this);
         return _qualification;
-      }).toList());
+      }).collect(Collectors.toSet());
+      
+      if(this.getQualifications() != null)
+        this.setQualifications(qualifications);
+      else this.getQualifications().addAll(qualifications);
+    };
   };
 };

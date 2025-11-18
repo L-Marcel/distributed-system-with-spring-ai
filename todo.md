@@ -1,1 +1,4 @@
 - Checar chat memory
+- Colocar os fitros do gateway
+- Rate limiter server-side no gateway
+- Colocar mais resilience4j

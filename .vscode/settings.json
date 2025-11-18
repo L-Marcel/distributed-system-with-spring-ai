@@ -1,4 +1,16 @@
 {
   "java.compile.nullAnalysis.mode": "automatic",
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "files.watcherExclude": {
+    "**/target/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true
+  },
+  "search.exclude": {
+    "**/target": true
+  },
+  "editor.minimap.enabled": false,
+  "breadcrumbs.enabled": false,
+  "java.jdt.ls.vmargs": "-Xmx256m -XX:+UseSerialGC -XX:TieredStopAtLevel=1",
+  "java.maven.downloadSources": false,
 }

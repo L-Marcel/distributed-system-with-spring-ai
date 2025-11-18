@@ -5,7 +5,7 @@
     {
       "label": "Config Server",
       "type": "shell",
-      "command": "java -jar config-server/target/config-server-*.jar",
+      "command": "java -Xms128m -Xmx256m -XX:TieredStopAtLevel=1 -XX:+UseSerialGC -Xss256k -jar config-server/target/config-server-*.jar",
       "isBackground": true,
       "presentation": { "echo": true, "reveal": "always", "panel": "new" },
       "dependsOn": ["Build All Services"]
@@ -13,7 +13,7 @@
     {
       "label": "Eureka Server 1",
       "type": "shell",
-      "command": "java -jar eureka/target/eureka-*.jar --spring.profiles.active=dev,server1",
+      "command": "java -Xms128m -Xmx256m -XX:TieredStopAtLevel=1 -XX:+UseSerialGC -Xss256k -jar eureka/target/eureka-*.jar --spring.profiles.active=dev,server1",
       "isBackground": true,
       "presentation": { "echo": true, "reveal": "always", "panel": "new" },
       "dependsOn": ["Build All Services"]
@@ -21,7 +21,7 @@
     {
       "label": "Eureka Server 2",
       "type": "shell",
-      "command": "java -jar eureka/target/eureka-*.jar --spring.profiles.active=dev,server2",
+      "command": "java -Xms128m -Xmx256m -XX:TieredStopAtLevel=1 -XX:+UseSerialGC -Xss256k -jar eureka/target/eureka-*.jar --spring.profiles.active=dev,server2",
       "isBackground": true,
       "presentation": { "echo": true, "reveal": "always", "panel": "new" },
       "dependsOn": ["Build All Services"]
@@ -29,7 +29,7 @@
     {
       "label": "Eureka Server 3",
       "type": "shell",
-      "command": "java -jar eureka/target/eureka-*.jar --spring.profiles.active=dev,server3",
+      "command": "java -Xms128m -Xmx256m -XX:TieredStopAtLevel=1 -XX:+UseSerialGC -Xss256k -jar eureka/target/eureka-*.jar --spring.profiles.active=dev,server3",
       "isBackground": true,
       "presentation": { "echo": true, "reveal": "always", "panel": "new" },
       "dependsOn": ["Build All Services"]
@@ -37,7 +37,7 @@
     {
       "label": "Gateway Server",
       "type": "shell",
-      "command": "java -jar gateway/target/gateway-*.jar",
+      "command": "java -Xms128m -Xmx256m -XX:TieredStopAtLevel=1 -XX:+UseSerialGC -Xss256k -jar gateway/target/gateway-*.jar",
       "isBackground": true,
       "presentation": { "echo": true, "reveal": "always", "panel": "new" },
       "dependsOn": ["Build All Services"]
@@ -45,7 +45,7 @@
     {
       "label": "Extractions MCP Server",
       "type": "shell",
-      "command": "java -jar extractions-mcp/target/extractions-mcp-*.jar",
+      "command": "java -Xms128m -Xmx256m -XX:TieredStopAtLevel=1 -XX:+UseSerialGC -Xss256k -jar extractions-mcp/target/extractions-mcp-*.jar",
       "isBackground": true,
       "presentation": { "echo": true, "reveal": "always", "panel": "new" },
       "dependsOn": ["Build All Services"]
@@ -53,7 +53,7 @@
     {
       "label": "Extractions Server",
       "type": "shell",
-      "command": "java -jar extractions/target/extractions-*.jar",
+      "command": "java -Xms128m -Xmx256m -XX:TieredStopAtLevel=1 -XX:+UseSerialGC -Xss256k -jar extractions/target/extractions-*.jar",
       "isBackground": true,
       "presentation": { "echo": true, "reveal": "always", "panel": "new" },
       "dependsOn": ["Build All Services"]
@@ -61,7 +61,7 @@
     {
       "label": "Notices Server",
       "type": "shell",
-      "command": "java -jar notices/target/notices-*.jar",
+      "command": "java -Xms128m -Xmx256m -XX:TieredStopAtLevel=1 -XX:+UseSerialGC -Xss256k -jar notices/target/notices-*.jar",
       "isBackground": true,
       "presentation": { "echo": true, "reveal": "always", "panel": "new" },
       "dependsOn": ["Build All Services"]

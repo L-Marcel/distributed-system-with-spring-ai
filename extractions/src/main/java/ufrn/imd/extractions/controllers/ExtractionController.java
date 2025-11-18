@@ -11,30 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ufrn.imd.commons.models.Notice;
 import ufrn.imd.commons.models.enums.NoticeStatus;
-import ufrn.imd.extractions.services.ExtractionService;
-import ufrn.imd.extractions.services.NoticesService;
+import ufrn.imd.extractions.services.ExtractionsService;
 
 @RestController
 @RequestMapping
 public class ExtractionController {
-  private ExtractionService extraction;
-  private NoticesService notices;
-
+  private ExtractionsService extractions;
   @Autowired
   public ExtractionController(
-    ExtractionService extraction,
-    NoticesService notices
+    ExtractionsService extractions
   ) {
-    this.extraction = extraction;
-    this.notices = notices;
+    this.extractions = extractions;
   };
 
   @PostMapping("/{id}")
   public ResponseEntity<NoticeStatus> extract(
     @PathVariable UUID id
   ) {
-    Notice notice = this.notices.findById(id);
-    NoticeStatus status = this.extraction.request(notice);
+    NoticeStatus status = this.extractions.request(id);
     return ResponseEntity.ok(status);
   };
 };

@@ -5,11 +5,11 @@ import org.springframework.lang.NonNull;
 
 import lombok.AllArgsConstructor;
 import ufrn.imd.commons.models.Notice;
-import ufrn.imd.extractions.services.ExtractionService;
+import ufrn.imd.extractions.services.ExtractionsService;
 
 @AllArgsConstructor
 public class NoticeExtractionProcessor implements ItemProcessor<Notice, Notice> {
-  private ExtractionService extraction;
+  private ExtractionsService extraction;
 
   @Override
   public Notice process(@NonNull Notice notice) throws Exception {

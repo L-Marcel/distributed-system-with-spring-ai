@@ -23,20 +23,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 import ufrn.imd.extractions.batch.NoticeExtractionProcessor;
 import ufrn.imd.extractions.batch.NoticeItemReader;
 import ufrn.imd.commons.models.Notice;
-import ufrn.imd.extractions.services.ExtractionService;
-import ufrn.imd.extractions.services.NoticesService;
+import ufrn.imd.extractions.services.ExtractionsService;
 
 @Configuration
 public class BatchConfiguration extends DefaultBatchConfiguration {
-  private ExtractionService extraction;
-  private NoticesService notices;
+  private ExtractionsService extractions;
 
   public BatchConfiguration(
-    ExtractionService extraction,
-    NoticesService notices
+    ExtractionsService extractions
   ) {
-    this.extraction = extraction;
-    this.notices = notices;
+    this.extractions = extractions;
   };
 
   @Bean
@@ -78,13 +74,13 @@ public class BatchConfiguration extends DefaultBatchConfiguration {
     @Value("#{jobParameters['id']}") String id
   ) {
     return new NoticeItemReader(
-      this.notices, 
+      this.extractions, 
       UUID.fromString(id)
     );
   };
 
   @Bean
   public ItemProcessor<Notice, Notice> extractProcessor() {
-    return new NoticeExtractionProcessor(this.extraction);
+    return new NoticeExtractionProcessor(this.extractions);
   };
 };

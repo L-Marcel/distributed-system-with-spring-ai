@@ -1,6 +1,7 @@
 package ufrn.imd.extractions.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +28,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import ufrn.imd.extractions.Prompts;
+import ufrn.imd.commons.errors.NoticeNotFound;
 import ufrn.imd.commons.models.Notice;
 import ufrn.imd.commons.models.enums.NoticeStatus;
+import ufrn.imd.commons.repositories.NoticesRepository;
 import ufrn.imd.commons.repositories.VectorStoreRepository;
 
 @Service
-public class ExtractionService {
+public class ExtractionsServiceImpl implements ExtractionsService {
   private static final Logger log = LoggerFactory.getLogger(
-    ExtractionService.class
+    ExtractionsServiceImpl.class
   );
 
   private Prompts prompts;
@@ -42,15 +45,17 @@ public class ExtractionService {
   private ChatClient client;
   private SyncMcpToolCallbackProvider tools;
   private VectorStoreRepository vectors;
+  private NoticesRepository notices;
   private ChatMemoryRepository momories;
   private JobLauncher launcher;
   private Job extract;
   
   @Autowired
-  public ExtractionService(
+  public ExtractionsServiceImpl(
     @Lazy JobLauncher launcher,
     @Lazy Job extract,
     SyncMcpToolCallbackProvider tools,
+    NoticesRepository notices,
     ChatMemoryRepository momories,
     VectorStoreRepository vectors,
     ObjectMapper mapper,
@@ -60,13 +65,21 @@ public class ExtractionService {
     this.launcher = launcher;
     this.extract = extract;
     this.tools = tools;
+    this.notices = notices;
     this.client = client;
     this.writer = mapper.writerWithDefaultPrettyPrinter();
     this.prompts = prompts;
     this.vectors = vectors;
   };
 
-  public NoticeStatus request(Notice notice) {
+  public Notice findById(UUID id) {
+    return this.notices.findById(id)
+      .orElseThrow(NoticeNotFound::new);
+  };
+
+  public NoticeStatus request(UUID id) {
+    Notice notice = this.findById(id);
+
     log.debug(
       "Requesting notice extraction by id '{}' and version '{}'", 
       notice.getId(),
@@ -114,6 +127,10 @@ public class ExtractionService {
       .build();
     
     List<Advisor> advisors = List.of(
+      MessageChatMemoryAdvisor
+        .builder(memory)
+        .conversationId(notice.getId().toString())
+        .build(),
       RetrievalAugmentationAdvisor.builder()
         .queryTransformers(
           RewriteQueryTransformer.builder()
@@ -123,13 +140,8 @@ public class ExtractionService {
           .similarityThreshold(0.50)
           .filterExpression(this.vectors.expressionByNoticeId(
             notice.getId()
-          ))
-          .vectorStore(this.vectors.getStore())
+          )).vectorStore(this.vectors.getStore())
           .build())
-        .build(),
-      MessageChatMemoryAdvisor
-        .builder(memory)
-        .conversationId(notice.getId().toString())
         .build()
     );
 

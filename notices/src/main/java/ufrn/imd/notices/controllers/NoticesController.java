@@ -36,11 +36,8 @@ public class NoticesController {
   public ResponseEntity<NoticeDTO> create(
     @RequestPart("file") MultipartFile file
   ) {
-    List<Document> chunks = this.notices.read(file.getResource());
-    chunks = this.notices.split(chunks);
-    
     Notice notice = this.notices.create(
-      chunks,
+      file.getResource(),
       file.getOriginalFilename(),
       file.getSize()
     );
@@ -63,12 +60,9 @@ public class NoticesController {
     @PathVariable UUID id,
     @RequestPart("file") MultipartFile file
   ) {
-    List<Document> chunks = this.notices.read(file.getResource());
-    chunks = this.notices.split(chunks);
-    
     Notice notice = this.notices.update(
       id,
-      chunks,
+      file.getResource(),
       file.getOriginalFilename(),
       file.getSize()
     );

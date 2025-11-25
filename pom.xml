@@ -27,6 +27,7 @@
     <module>eureka</module>
     <module>extractions</module>
     <module>extractions-mcp</module>
+    <module>serverless</module>
     <module>commons</module>
   </modules>
   <dependencyManagement>

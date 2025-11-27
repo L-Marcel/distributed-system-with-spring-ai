@@ -1,1 +1,0 @@
-- Checar chat memory

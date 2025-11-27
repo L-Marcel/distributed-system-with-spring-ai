@@ -6,66 +6,71 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ['host.docker.internal:8888']
+        labels:
+          instance: "config-server"
+          application: "Config Server"
     basic_auth:
       username: 'root'
       password: 'root'
-    metric_relabel_configs:
-      - source_labels: [__name__]
-        regex: 'jvm_buffer_.*|jvm_memory_pool_.*|tomcat_.*'
-        action: drop
   - job_name: 'eureka-1'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ['host.docker.internal:8761']
-    metric_relabel_configs:
-      - source_labels: [__name__]
-        regex: 'jvm_buffer_.*|jvm_memory_pool_.*|tomcat_.*'
-        action: drop
+        labels:
+          instance: "eureka-1"
+          application: "Eureka 1"
   - job_name: 'eureka-2'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ['host.docker.internal:8762']
-    metric_relabel_configs:
-      - source_labels: [__name__]
-        regex: 'jvm_buffer_.*|jvm_memory_pool_.*|tomcat_.*'
-        action: drop
+        labels:
+          instance: "eureka-2"
+          application: "Eureka 2"
   - job_name: 'eureka-3'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ['host.docker.internal:8763']
-    metric_relabel_configs:
-      - source_labels: [__name__]
-        regex: 'jvm_buffer_.*|jvm_memory_pool_.*|tomcat_.*'
-        action: drop
+        labels:
+          instance: "eureka-3"
+          application: "Eureka 3"
   - job_name: 'gateway'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ['host.docker.internal:8080']
-    metric_relabel_configs:
-      - source_labels: [__name__]
-        regex: 'jvm_buffer_.*|jvm_memory_pool_.*|tomcat_.*'
-        action: drop
+        labels:
+          instance: "gateway"
+          application: "Gateway"
   - job_name: 'extractions'
     metrics_path: '/extractions/actuator/prometheus'
     static_configs:
       - targets: ['host.docker.internal:8080']
-    metric_relabel_configs:
-      - source_labels: [__name__]
-        regex: 'jvm_buffer_.*|jvm_memory_pool_.*|tomcat_.*'
-        action: drop
+        labels:
+          instance: "extractions"
+          application: "Extractions"
   - job_name: 'extractions-mcp'
     metrics_path: '/extractions-mcp/actuator/prometheus'
     static_configs:
       - targets: ['host.docker.internal:8080']
-    metric_relabel_configs:
-      - source_labels: [__name__]
-        regex: 'jvm_buffer_.*|jvm_memory_pool_.*|tomcat_.*'
-        action: drop
+        labels:
+          instance: "extractions-mcp"
+          application: "Extractions MCP"
   - job_name: 'notices'
     metrics_path: '/notices/actuator/prometheus'
     static_configs:
       - targets: ['host.docker.internal:8080']
-    metric_relabel_configs:
-      - source_labels: [__name__]
-        regex: 'jvm_buffer_.*|jvm_memory_pool_.*|tomcat_.*'
-        action: drop
+        labels:
+          instance: "notices"
+          application: "Notices"
+  - job_name: 'serverless'
+    metrics_path: '/serverless/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+        labels:
+          instance: "serverless"
+          application: "Serverless"
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8759']
+        labels:
+          instance: "prometheus"
+          application: "Prometheus"

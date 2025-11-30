@@ -83,7 +83,6 @@ public interface NoticesService {
     throw new TooManyRequests();
   };
 
-
   @CircuitBreaker(name = "create-or-update-notice", fallbackMethod = "deleteFallback")
   @Retry(name = "create-or-update-notice", fallbackMethod = "deleteFallback")
   @RateLimiter(name = "create-or-update-notice", fallbackMethod = "deleteFallbackTooManyRequests")

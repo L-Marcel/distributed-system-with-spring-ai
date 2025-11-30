@@ -14,6 +14,6 @@
   },
   "editor.minimap.enabled": false,
   "breadcrumbs.enabled": false,
-  "java.jdt.ls.vmargs": "-Xmx900m -XX:+UseSerialGC -XX:TieredStopAtLevel=1",
+  "java.jdt.ls.vmargs": "-Xmx1G -XX:+UseSerialGC -XX:TieredStopAtLevel=1",
   "java.maven.downloadSources": false,
 }

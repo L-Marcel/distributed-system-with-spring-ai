@@ -68,9 +68,3 @@ scrape_configs:
         labels:
           instance: "serverless"
           application: "Serverless"
-  - job_name: 'prometheus'
-    static_configs:
-      - targets: ['host.docker.internal:8759']
-        labels:
-          instance: "prometheus"
-          application: "Prometheus"

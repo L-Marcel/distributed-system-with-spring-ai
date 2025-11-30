@@ -2,6 +2,7 @@ package ufrn.imd.notices.services;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -13,13 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
 
+import ufrn.imd.commons.errors.NoticeAlreadyExists;
 import ufrn.imd.commons.errors.NoticeNotFound;
 import ufrn.imd.commons.models.Notice;
 import ufrn.imd.commons.models.enums.NoticeStatus;
 import ufrn.imd.commons.models.enums.NoticeType;
 import ufrn.imd.commons.repositories.NoticesRepository;
 import ufrn.imd.commons.repositories.VectorStoreRepository;
+import ufrn.imd.notices.events.NoticeChangedEvent;
 
 @Service
 public class NoticesServiceImpl implements NoticesService {
@@ -30,19 +34,19 @@ public class NoticesServiceImpl implements NoticesService {
   private TokenTextSplitter splitter;
   private VectorStoreRepository vectors;
   private NoticesRepository notices;
-  private ExtractionsService extractions;
+  private ApplicationEventPublisher publisher;
 
   @Autowired
   public NoticesServiceImpl(
     TokenTextSplitter splitter,
     VectorStoreRepository vectors,
     NoticesRepository notices,
-    ExtractionsService extractions
+    ApplicationEventPublisher publisher
   ) {
     this.splitter = splitter;
     this.vectors = vectors;
     this.notices = notices;
-    this.extractions = extractions;
+    this.publisher = publisher;
   };
 
   private List<Document> read(Resource file) {
@@ -68,6 +72,9 @@ public class NoticesServiceImpl implements NoticesService {
     String filename,
     Long bytes
   ) {
+    Optional<Notice> candidate = this.notices.findByFilename(filename);
+    if(candidate.isPresent()) throw new NoticeAlreadyExists();
+    
     List<Document> documents = this.read(file);
     documents = this.split(documents);
 
@@ -79,7 +86,8 @@ public class NoticesServiceImpl implements NoticesService {
     Notice notice = new Notice();
     notice.setFilename(filename);
     notice.setBytes(bytes);
-    this.notices.save(notice);
+    notice.setStatus(NoticeStatus.PROCESSING);
+    this.notices.saveAndFlush(notice);
 
     log.debug(
       "Notice saved from file '{}'' with id '{}'", 
@@ -108,12 +116,7 @@ public class NoticesServiceImpl implements NoticesService {
       notice.getId()
     );
 
-    NoticeStatus status = this.extractions.request(notice.getId())
-      .getBody();
-
-    notice.setStatus(status);
-
-    this.notices.save(notice);
+    this.publisher.publishEvent(new NoticeChangedEvent(notice.getId()));
 
     log.debug(
       "Notice with id '{}' updated to status '{}'",
@@ -180,13 +183,8 @@ public class NoticesServiceImpl implements NoticesService {
       id
     );
 
-    NoticeStatus status = this.extractions.request(notice.getId())
-      .getBody();
+    this.publisher.publishEvent(new NoticeChangedEvent(notice.getId()));
 
-    notice.setStatus(status);
-
-    this.notices.save(notice);
-    
     log.debug(
       "Notice with id '{}' updated to status '{}'",
       notice.getId(),

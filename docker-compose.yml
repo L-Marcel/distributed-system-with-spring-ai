@@ -32,7 +32,7 @@ services:
       POSTGRES_PASSWORD: app
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./batch.sql:/docker-entrypoint-initdb.d/batch.sql
+      - ./queries/batch.sql:/docker-entrypoint-initdb.d/batch.sql
     command: postgres -c shared_buffers=64MB -c work_mem=4MB -c max_connections=50
   prometheus:
     image: prom/prometheus:latest
@@ -89,7 +89,7 @@ services:
       resources:
         limits:
           cpus: '0.50'
-          memory: 256M
+          memory: 360M
         reservations:
           cpus: '0.12'
           memory: 128M
@@ -98,6 +98,7 @@ services:
     environment:
       - STORAGE_TYPE=mem
       - JAVA_OPTS=-Xms64m -Xmx192m
+      - MEM_MAX_SPANS=1000
 volumes:
   postgres-data:
     driver: local

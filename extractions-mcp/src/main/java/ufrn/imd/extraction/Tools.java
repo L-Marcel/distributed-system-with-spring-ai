@@ -177,7 +177,7 @@ public class Tools {
       return "Falha ao atualizar o contrato: " + e.getMessage();
     }
   };
-
+  
   @Tool(
     name = "save_representative", 
     description = """

@@ -1,16 +1,19 @@
 {
   "java.compile.nullAnalysis.mode": "automatic",
   "java.configuration.updateBuildConfiguration": "interactive",
+  "telemetry.feedback.enabled": false,
+  "telemetry.editStats.details.enabled": false,
+  "telemetry.editStats.enabled": false,
   "files.watcherExclude": {
     "**/target/**": true,
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true
   },
   "search.exclude": {
-    "**/target": true
+    "**/target/**": true
   },
   "editor.minimap.enabled": false,
   "breadcrumbs.enabled": false,
-  "java.jdt.ls.vmargs": "-Xmx800m -XX:+UseSerialGC -XX:TieredStopAtLevel=1",
+  "java.jdt.ls.vmargs": "-Xmx900m -XX:+UseSerialGC -XX:TieredStopAtLevel=1",
   "java.maven.downloadSources": false,
 }

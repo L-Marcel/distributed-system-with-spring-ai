@@ -196,20 +196,31 @@ public class SystemFunctions {
 Respeite a ordem de execução e regras estabelecidas abaixo, e sem esquecer de subir os containers do `Docker` antes.
 
 1. Configuration ([/config-server](/config-server/)):
-  - Configurado para apenas uma instância;
-  - Espere ele iniciar corretamente, todos os demais vão tentar se comunicar com ele assim que iniciarem.
+
+- Configurado para apenas uma instância;
+- Espere ele iniciar corretamente, todos os demais vão tentar se comunicar com ele assim que iniciarem.
+
 2. Eureka ([/eureka](/eureka/)):
-  - Configurado para exatamente trẽs instâncias;
-  - Espere ao menos uma instância iniciar corretamente;
-  - É normal algumas instâncias lançarem um `warning` por não encontrarem as demais em um primeiro momento.
+
+- Configurado para exatamente trẽs instâncias;
+- Espere ao menos uma instância iniciar corretamente;
+- É normal algumas instâncias lançarem um `warning` por não encontrarem as demais em um primeiro momento.
+
 3. Gateway ([/gateway](/gateway/));
+
 4. Notices ([/notices](/notices/)):
-  - Espere o banco de dados está disponível.
-5. Serverless ([/serverless](/serverless/))
+
+- Espere o banco de dados está disponível.
+
+5. Serverless ([/serverless](/serverless/));
+
 6. Extractions MCP ([/extractions-mcp](/extractions-mcp/)):
-  - Espere o banco de dados está disponível.
+
+- Espere o banco de dados está disponível.
+
 7. Extractions ([/extractions](/extractions/)):
-  - Espere o `Extractions MCP` está disponível pelo `Gateway`.
+
+- Espere o `Extractions MCP` está disponível pelo `Gateway`.
  
 # Rotas
 

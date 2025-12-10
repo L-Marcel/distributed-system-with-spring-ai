@@ -57,7 +57,7 @@ public class AiConfiguration {
     OpenAiChatModel chatModel = OpenAiChatModel.builder()
       .openAiApi(openAiApi)
       .build();
-
+    
     return ChatClient.builder(chatModel);
   };
 

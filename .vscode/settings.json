@@ -13,7 +13,5 @@
     "**/target/**": true
   },
   "editor.minimap.enabled": false,
-  "breadcrumbs.enabled": false,
-  "java.jdt.ls.vmargs": "-Xmx1G -XX:+UseSerialGC -XX:TieredStopAtLevel=1",
-  "java.maven.downloadSources": false,
+  "breadcrumbs.enabled": false
 }

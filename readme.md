@@ -6,6 +6,7 @@ Este projeto foi elaborado durante a disciplina de `Programação Distribuída` 
 - [Estrutura](#estrutura)
 - [Instruções para execução](#instruções-para-execução)
   - [Eureka](#eureka)
+  - [Mailtrap MCP](#mailtrap-mcp)
   - [Config server](#config-server)
     - [Limitações relacionadas aos modelos](#limitações-relacionadas-aos-modelos)
   - [Docker](#docker)
@@ -55,6 +56,10 @@ Você vai precisar alterar seu arquivos `/hosts`. No `Ubuntu` o caminho dele é 
 127.0.0.1 server2
 127.0.0.1 server3
 ```
+
+## Mailtrap MCP
+
+Para que a IA consiga enviar o e-mail corretamente, você precisará configurar também o [Mailtrap MCP](https://github.com/mailtrap/mailtrap-mcp), para isso, preencha adequadamente os campos do arquivo [/extractions/src/main/resources/mcp-servers-example.json](/extractions/src/main/resources/mcp-servers-example.json). Uma vez preenchido, renomei o arquivo para `mcp-servers.json`.
 
 ## Config server
 

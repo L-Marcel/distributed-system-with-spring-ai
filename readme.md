@@ -1,6 +1,6 @@
 # Distributed System With Spring AI
 
-Este projeto foi elaborado durante a disciplina de `Programação Distribuída` na `UFRN`, ministrada pelo professor `Nélio Cacho`. Se trata de um sistema distribuído de extração de dados de editais que agrega recursos de observabilidade, resiliência, agentes inteligêntes, etc.
+Este projeto foi elaborado durante a disciplina de `Programação Distribuída` na `UFRN`, ministrada pelo professor `Nélio Cacho`. Se trata de um sistema distribuído de extração de dados de editais que agrega recursos de observabilidade, padrões de resiliência, agentes inteligentes, etc.
 
 - [Observações](#observações)
 - [Estrutura](#estrutura)

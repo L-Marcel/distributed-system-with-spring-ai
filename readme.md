@@ -1,4 +1,4 @@
-# Distributed System With AI
+# Distributed System With Spring AI
 
 Este projeto foi elaborado durante a disciplina de `Programação Distribuída` na `UFRN`, ministrada pelo professor `Nélio Cacho`. Se trata de um sistema distribuído de extração de dados de editais que agrega recursos de observabilidade, resiliência, agentes inteligêntes, etc.
 
@@ -65,7 +65,7 @@ Para que a IA consiga enviar o e-mail corretamente, você precisará configurar 
 
 Na pasta (/config-server/src/main/resources/)[/config-server/src/main/resources/], deixei no arquivo `application.properties` o servidor configurado para procurar as configurações em um repositório privado. É importante que seja privado, uma vez que há nas configurações várias chaves secretas.
 ```.properties
-spring.cloud.config.server.git.uri=https://github.com/L-Marcel/distributed-system-with-ai-config.git
+spring.cloud.config.server.git.uri=https://github.com/L-Marcel/distributed-system-with-spring-ai-config.git
 spring.security.user.name=root
 spring.security.user.password=root
 spring.cloud.config.server.git.search-paths={application}/{profile}
@@ -73,7 +73,7 @@ spring.cloud.config.server.git.default-label=main
 spring.cloud.config.server.git.username=L-Marcel
 ```
 
-Estou deixando para você um repositório template para as configurações, disponível em [Distributed System With AI Config Template](https://github.com/L-Marcel/distributed-system-with-ai-config-template). Há instruções extras no `readme.md` deste mesmo template destinadas exclusivamente ao repositório de configurações.
+Estou deixando para você um repositório template para as configurações, disponível em [Distributed System With AI Config Template](https://github.com/L-Marcel/distributed-system-with-spring-ai-config-template). Há instruções extras no `readme.md` deste mesmo template destinadas exclusivamente ao repositório de configurações.
 
 Além disso, você vai precisar criar um arquivo nessa mesma pasta chamado `secret.properties`. É nele que há a chave de acesso para o repositório privado.
 ```.properties
